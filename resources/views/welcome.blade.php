@@ -260,7 +260,7 @@
                 <hr>
             </aside>
         </section>
-        <section id="video" class="p-8 md:p-16 h-screen" data-aos="fade">
+        <section id="video" class="p-8 md:p-16" data-aos="fade">
             <iframe class="w-full" width="560" height="315"
                 src="https://www.youtube.com/embed/mbkI7aKOkE0?si=WVKnIDGcgPHb8Bdi" title="YouTube video player"
                 frameborder="0"
