@@ -64,15 +64,16 @@
     </nav>
     <main class="min-h-screen">
         <section id="hero" class="relative h-[calc(100vh-2.5rem-0.5rem)] flex items-center">
-            <div class="p-8 lg:p-28 lg:max-w-[55vw] flex flex-col items-start gap-4" data-aos="fade-up">
+            <div class="p-8 lg:p-28 xl:max-w-[55vw] flex flex-col items-start gap-4" data-aos="fade-up">
                 <h2 class="font-black text-7xl text-accent-1">Selamat Datang Ksatria</h2>
                 <p class="lg:max-w-[60%] text-accent-2 ps-2">Lorem, ipsum dolor sit amet consectetur adipisicing elit.
                     Exercitationem magnam itaque sit magni asperiores labore</p>
                 <a class="px-8 py-2 rounded-full bg-accent-1 hover:bg-accent-1/75 duration-300 text-white"
                     href="">Lihat Program Kerja</a>
             </div>
-            <img class="-z-10 absolute right-0 h-full w-screen lg:ps-2 lg:w-2/3 object-cover" src="/images/hero.png"
-                alt="hero" data-aos="fade">
+            <div class="-z-10 absolute right-0 h-full w-screen lg:ps-2 lg:w-2/3" data-aos="fade">
+                <img class="object-cover h-full opacity-25 xl:opacity-75" src="/images/hero.png" alt="hero">
+            </div>
         </section>
         <section id="akhlak"
             class="bg-accent-2 flex flex-col md:flex-row items-center gap-4 p-8 pe-0 overflow-hidden">
@@ -308,6 +309,11 @@
             $("#nav-opener").click(() => {
                 $("#nav-slide").toggleClass("-top-full top-14");
                 $("#nav-opener").toggleClass("rotate-180 rotate-0");
+            });
+            // scroll to top
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
             });
         });
     </script>
