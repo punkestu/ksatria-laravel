@@ -261,7 +261,7 @@
             </aside>
         </section>
         <section id="video" class="p-8 md:p-16 h-screen" data-aos="fade">
-            <iframe class="h-full w-full" width="560" height="315"
+            <iframe class="w-full" width="560" height="315"
                 src="https://www.youtube.com/embed/mbkI7aKOkE0?si=WVKnIDGcgPHb8Bdi" title="YouTube video player"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
