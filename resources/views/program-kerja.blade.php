@@ -4,7 +4,7 @@
         <h2 class="text-center font-black text-5xl text-accent-1" data-aos="fade-down">
             Program Kerja
         </h2>
-        <section id="program-kerja" class="flex justify-center gap-4 flex-wrap">
+        <section id="program-kerja" class="flex justify-center gap-4 flex-wrap" data-aos="fade-up">
             <a href="" class="bg-white p-4 rounded-lg flex gap-4">
                 <div class="w-36 bg-gray-500 rounded-md">
                 </div>
