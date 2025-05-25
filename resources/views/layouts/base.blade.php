@@ -13,22 +13,30 @@
 </head>
 
 <body>
+    @include('components.alert')
     @include('components.header')
     @yield('content')
     @include('components.footer')
-    @yield('scripts')
+    <script>
+        const onloads = [];
+    </script>
+    @stack('scripts')
     <script>
         window.addEventListener('load', () => {
             AOS.refresh();
-            $("#nav-opener").click(() => {
-                $("#nav-slide").toggleClass("-top-full top-14");
-                $("#nav-opener").toggleClass("rotate-180 rotate-0");
-            });
             // scroll to top
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             });
+
+            if (onloads.length > 0) {
+                onloads.forEach((onload) => {
+                    if (typeof onload === 'function') {
+                        onload();
+                    }
+                });
+            }
         });
     </script>
 </body>
