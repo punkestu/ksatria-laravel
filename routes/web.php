@@ -32,3 +32,24 @@ Route::resource('cabang', \App\Http\Controllers\Dashboard\CabangController::clas
 Route::resource('user', \App\Http\Controllers\Dashboard\UserController::class)
     ->middleware(['auth', 'admin'])
     ->names('dashboard.user');
+Route::resource('programkerja', \App\Http\Controllers\Dashboard\ProgramkerjaController::class)
+    ->middleware(['auth', 'admin'])
+    ->names('dashboard.programkerja');
+
+Route::resource('pengajuanproker', \App\Http\Controllers\ProgramkerjaController::class)
+    ->middleware(['auth'])
+    ->names('pengajuanproker');
+Route::group([], function () {
+    Route::patch('/pengajuanproker/{pengajuanproker}/approve', [\App\Http\Controllers\ProgramkerjaController::class, 'approve'])
+        ->name('pengajuanproker.approve')
+        ->middleware(['auth', 'admin']);
+    Route::patch('/pengajuanproker/{pengajuanproker}/reject', [\App\Http\Controllers\ProgramkerjaController::class, 'reject'])
+        ->name('pengajuanproker.reject')
+        ->middleware(['auth', 'admin']);
+    Route::patch('/pengajuanproker/{pengajuanproker}/complete', [\App\Http\Controllers\ProgramkerjaController::class, 'complete'])
+        ->name('pengajuanproker.complete')
+        ->middleware(['auth', 'admin']);
+    Route::patch('/pengajuanproker/{pengajuanproker}/cancel', [\App\Http\Controllers\ProgramkerjaController::class, 'cancel'])
+        ->name('pengajuanproker.cancel')
+        ->middleware(['auth', 'admin']);
+});

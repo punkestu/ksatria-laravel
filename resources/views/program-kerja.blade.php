@@ -1,11 +1,12 @@
 @extends('layouts.base')
 @section('content')
-    <main class="bg-[url('/images/people-background.png')] bg-no-repeat bg-cover bg-center min-h-screen flex flex-col items-center justify-center gap-8 p-8">
+    <main
+        class="bg-[url('/images/people-background.png')] bg-no-repeat bg-cover bg-center min-h-screen flex flex-col items-center justify-center gap-8 p-8">
         <h2 class="text-center font-black text-5xl text-accent-1" data-aos="fade-down">
             Program Kerja
         </h2>
         <section id="program-kerja" class="flex justify-center gap-4 flex-wrap" data-aos="fade-up">
-            <a href="" class="bg-white p-4 rounded-lg flex gap-4">
+            <a href="{{ route('pengajuanproker.index', ['tab' => 'KSATRIA BAIK']) }}" class="bg-white p-4 rounded-lg flex gap-4">
                 <div class="w-36 bg-gray-500 rounded-md">
                 </div>
                 <aside class="w-52 flex flex-col">
@@ -16,7 +17,7 @@
                         knowledge maupun charity kepada lingkungan kerja atau lingkungan sekitar</p>
                 </aside>
             </a>
-            <a href="" class="bg-white p-4 rounded-lg flex gap-4">
+            <a href="{{ route('pengajuanproker.index', ['tab' => 'KSATRIA SALAM']) }}" class="bg-white p-4 rounded-lg flex gap-4">
                 <div class="w-36 bg-gray-500 rounded-md">
                 </div>
                 <aside class="w-52 flex flex-col">
@@ -26,7 +27,7 @@
                         kerja lain, organisasi profesi, serikat pekerja, para role model maupun instansi lain.</p>
                 </aside>
             </a>
-            <a href="" class="bg-white p-4 rounded-lg flex gap-4">
+            <a href="{{ route('pengajuanproker.index', ['tab' => 'KSATRIA PINTAR']) }}" class="bg-white p-4 rounded-lg flex gap-4">
                 <div class="w-36 bg-gray-500 rounded-md">
                 </div>
                 <aside class="w-52 flex flex-col">
@@ -38,7 +39,7 @@
                     </p>
                 </aside>
             </a>
-            <a href="" class="bg-white p-4 rounded-lg flex gap-4">
+            <a href="{{ route('pengajuanproker.index', ['tab' => 'KSATRIA RESIK']) }}" class="bg-white p-4 rounded-lg flex gap-4">
                 <div class="w-36 bg-gray-500 rounded-md">
                 </div>
                 <aside class="w-52 flex flex-col">
@@ -51,7 +52,7 @@
                         dan sehat sehingga meningkatkan produktifitas serta semangat karyawan.</p>
                 </aside>
             </a>
-            <a href="" class="bg-white p-4 rounded-lg flex gap-4">
+            <a href="{{ route('pengajuanproker.index', ['tab' => 'KSATRIA BISA']) }}" class="bg-white p-4 rounded-lg flex gap-4">
                 <div class="w-36 bg-gray-500 rounded-md">
                 </div>
                 <aside class="w-52 flex flex-col">
@@ -65,7 +66,7 @@
                         digitalisasi dalam proses kerja di masing masing unit ataupun perubahan alur dan prosedur kerja.</p>
                 </aside>
             </a>
-            <a href="" class="bg-white p-4 rounded-lg flex gap-4">
+            <a href="{{ route('pengajuanproker.index', ['tab' => 'KSATRIA SEHAT']) }}" class="bg-white p-4 rounded-lg flex gap-4">
                 <div class="w-36 bg-gray-500 rounded-md">
                 </div>
                 <aside class="w-52 flex flex-col">
@@ -78,7 +79,7 @@
                         talenta-talenta terbaik dibidang olahraga yang ada di AirNav Indonesia</p>
                 </aside>
             </a>
-            <a href="" class="bg-white p-4 rounded-lg flex gap-4">
+            <a href="{{ route('pengajuanproker.index', ['tab' => 'KSATRIA S.H.A.R.E']) }}" class="bg-white p-4 rounded-lg flex gap-4">
                 <div class="w-36 bg-gray-500 rounded-md">
                 </div>
                 <aside class="w-52 flex flex-col">
@@ -91,7 +92,7 @@
                         lingkungan kerja terkait budaya perusahaan (AKHLAK) dan budaya keselamatan</p>
                 </aside>
             </a>
-            <a href="" class="bg-white p-4 rounded-lg flex gap-4">
+            <a href="{{ route('pengajuanproker.index', ['tab' => 'KSATRIA RELIGI']) }}" class="bg-white p-4 rounded-lg flex gap-4">
                 <div class="w-36 bg-gray-500 rounded-md">
                 </div>
                 <aside class="w-52 flex flex-col">

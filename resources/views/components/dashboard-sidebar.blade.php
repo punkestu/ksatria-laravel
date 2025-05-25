@@ -2,6 +2,7 @@
     $nav = [
         'Cabang' => route('dashboard.cabang.index'),
         'User' => route('dashboard.user.index'),
+        'Program Kerja' => route('dashboard.programkerja.index'),
     ];
 @endphp
 <button id="sidebar-opener" class="block xl:hidden text-black mb-2">
