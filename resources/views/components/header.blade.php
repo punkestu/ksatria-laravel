@@ -1,10 +1,11 @@
 @php
     $navbar = [
-        'Profil' => '',
-        'Program Kerja' => route('program-kerja'),
-        'Statistik' => '',
-        'Struktur Organisasi' => route('struktur-organisasi'),
-        'Bantuan' => '',
+        'Dashboard' => ['url' => route('dashboard.cabang.index'), 'isadmin' => true],
+        'Profil' => ['url' => '', 'isadmin' => false],
+        'Program Kerja' => ['url' => route('program-kerja'), 'isadmin' => false],
+        'Statistik' => ['url' => '', 'isadmin' => false],
+        'Struktur Organisasi' => ['url' => route('struktur-organisasi'), 'isadmin' => false],
+        'Bantuan' => ['url' => '', 'isadmin' => false],
     ];
     $loginurl = route('login');
 @endphp
@@ -19,9 +20,12 @@
         </a>
     </aside>
     <nav class="flex justify-center md:justify-end items-center grow gap-8">
-        @foreach ($navbar as $key => $url)
+        @foreach ($navbar as $key => $data)
+            @if ($data['isadmin'] && (!auth()->user() || !auth()->user()->isAdmin()))
+                @continue
+            @endif
             <a class="hidden xl:block hover:text-white/75 duration-300 hover:underline"
-                href="{{ $url }}">{{ $key }}</a>
+                href="{{ $data['url'] }}">{{ $key }}</a>
         @endforeach
         @auth
             <a class="hover:text-white/75 duration-300 flex" href="">
@@ -54,16 +58,19 @@
 </header>
 <nav id="nav-slide"
     class="w-screen flex flex-col fixed -top-full items-center justify-end grow bg-white z-10 transition-all duration-500 ease-in-out shadow">
-    @foreach ($navbar as $key => $url)
+    @foreach ($navbar as $key => $data)
+        @if ($data['isadmin'] && (!auth()->user() || !auth()->user()->isAdmin()))
+            @continue
+        @endif
         <a class="hover:text-black/75 duration-300 py-2 border-b w-full text-center"
-            href="{{ $url }}">{{ $key }}</a>
+            href="{{ $data['url'] }}">{{ $key }}</a>
     @endforeach
 </nav>
 @push('scripts')
     <script>
         onloads.push(() => {
             $("#nav-opener").click(() => {
-                $("#nav-slide").toggleClass("-top-full top-[6rem] md:top-14");
+                $("#nav-slide").toggleClass("-top-full top-[5.6rem] md:top-14");
                 $("#nav-opener").toggleClass("rotate-180 rotate-0");
             });
         });
