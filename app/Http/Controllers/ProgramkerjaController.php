@@ -6,6 +6,7 @@ use App\Models\ProgramKerja;
 use App\Models\ProgramKerjaItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProgramkerjaController extends Controller
 {
@@ -97,7 +98,7 @@ class ProgramkerjaController extends Controller
             'description' => 'nullable|string',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
-        ],[
+        ], [
             'program_kerja_id.required' => 'Program kerja harus dipilih.',
             'program_kerja_id.exists' => 'Program kerja yang dipilih tidak valid.',
             'name.required' => 'Nama program kerja harus diisi.',
@@ -130,7 +131,9 @@ class ProgramkerjaController extends Controller
         $programKerjaItem->user_id = Auth::id();
         $programKerjaItem->save();
 
-        return redirect()->route('pengajuanproker.index')->with('alert', [
+        $tab = $programKerjaItem->programKerja->name;
+
+        return redirect()->route('pengajuanproker.index', ['tab' => $tab])->with('alert', [
             'type' => 'success',
             'message' => 'Program kerja berhasil dibuat.'
         ]);
@@ -228,6 +231,9 @@ class ProgramkerjaController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'budget' => 'required_if:status,approved|numeric|min:0',
+            'picture' => 'nullable|array',
+            'picture.*.picture_id' => 'exists:pictures,id',
+            'picture.*.url' => 'nullable|string',
         ], [
             'program_kerja_id.required' => 'Program kerja harus dipilih.',
             'program_kerja_id.exists' => 'Program kerja yang dipilih tidak valid.',
@@ -244,6 +250,9 @@ class ProgramkerjaController extends Controller
             'budget.required_if' => 'Anggaran harus diisi jika status program kerja adalah disetujui.',
             'budget.numeric' => 'Anggaran harus berupa angka.',
             'budget.min' => 'Anggaran tidak boleh kurang dari 0.',
+            'picture.array' => 'Gambar harus berupa array.',
+            'picture.*.picture_id.exists' => 'Gambar yang dipilih tidak valid.',
+            'picture.*.url.string' => 'URL gambar harus berupa teks.',
         ]);
 
         if ($validation->fails()) {
@@ -262,8 +271,13 @@ class ProgramkerjaController extends Controller
         $pengajuanproker->end_date = $request->input('end_date');
         $pengajuanproker->budget = $request->input('budget', 0);
         $pengajuanproker->save();
+        $pengajuanproker->pictures()->sync(array_map(function ($picture) {
+            return $picture["picture_id"];
+        }, $request->input('picture', [])));
 
-        return redirect()->route('pengajuanproker.index')->with('alert', [
+        $tab = $pengajuanproker->programKerja->name;
+
+        return redirect()->route('pengajuanproker.index', ['tab' => $tab])->with('alert', [
             'type' => 'success',
             'message' => 'Program kerja berhasil diperbarui.'
         ]);
@@ -283,9 +297,10 @@ class ProgramkerjaController extends Controller
             ]);
         }
 
+        $tab = $pengajuanproker->programKerja->name;
         $pengajuanproker->delete();
 
-        return redirect()->route('pengajuanproker.index')->with('alert', [
+        return redirect()->route('pengajuanproker.index', ['tab' => $tab])->with('alert', [
             'type' => 'success',
             'message' => 'Program kerja berhasil dihapus.'
         ]);

@@ -35,14 +35,34 @@
                     class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     value="{{ $pengajuanproker->end_date }}" readonly>
             </div>
-            @if ($pengajuanproker->status === 'approved')
-                {{-- budger --}}
+
+            <h2 class="mb-4">
+                Status: {{ ucfirst($pengajuanproker->status) }}
+            </h2>
+
+            @if (
+                $pengajuanproker->status === 'approved' ||
+                    $pengajuanproker->status === 'rejected' ||
+                    $pengajuanproker->status === 'completed')
+                {{-- budget --}}
                 <div class="mb-4">
                     <label for="budget" class="block text-sm font-medium text-gray-700">Anggaran</label>
                     <input type="number" id="budget" name="budget" required
                         class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         value="{{ old('budget') ?? $pengajuanproker->budget }}" readonly>
                 </div>
+                @if ($pengajuanproker->pictures->isNotEmpty())
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Gambar</label>
+                        <div class="flex flex-wrap justify-center gap-2">
+                            @foreach ($pengajuanproker->pictures as $picture)
+                                <div class="rounded p-2 grow">
+                                    <img src="{{ $picture->url }}" alt="{{ $picture->name }}" class="rounded">
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
             @endif
         </div>
     </main>

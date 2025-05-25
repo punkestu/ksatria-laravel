@@ -25,14 +25,7 @@ class ProgramKerjaItem extends Model
 
     public function pictures()
     {
-        return $this->hasManyThrough(
-            Picture::class,
-            ProgramKerjaItemPicture::class,
-            'program_kerja_item_id', // Foreign key on ProgramKerjaItemPicture table
-            'id', // Foreign key on Picture table
-            'id', // Local key on ProgramKerjaItem table
-            'picture_id' // Local key on ProgramKerjaItemPicture table
-        );
+        return $this->belongsToMany(Picture::class, 'program_kerja_item_pictures');
     }
 
     public function cabang()

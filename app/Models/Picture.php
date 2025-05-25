@@ -8,7 +8,8 @@ class Picture extends Model
 {
     protected $fillable = [
         'name',
-        'url'
+        'url',
+        'user_id',
     ];
 
     public function programKerjaItems()

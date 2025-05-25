@@ -56,4 +56,28 @@ class AuthController extends Controller
             'message' => 'Logout berhasil',
         ]);
     }
+
+    /**
+        Get user sanctum token from API
+     */
+    public function getSanctumTokenApi(Request $request)
+    {
+        /**
+        @var User $user
+         */
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        // create token that only live for 1 hour
+        $expired = now()->addHour();
+        $token = $user->createToken('Sanctum Token', ['*'], $expired)->plainTextToken;
+
+        return response()->json([
+            'message' => 'Token retrieved successfully',
+            'token' => $token,
+            'expires_at' => $expired,
+        ], 200);
+    }
 }

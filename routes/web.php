@@ -21,6 +21,8 @@ Route::group([
     })->name('login');
     Route::post('/', [\App\Http\Controllers\AuthController::class, "login"])->name('login.post');
 });
+Route::get('/auth', [\App\Http\Controllers\AuthController::class, 'getSanctumTokenApi'])
+        ->name('api.auth.getSanctumToken');
 Route::get('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
 Route::get('/user-profile', function () {
     return view('user-profile');
