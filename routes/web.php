@@ -29,3 +29,6 @@ Route::get('/user-profile', function () {
 Route::resource('cabang', \App\Http\Controllers\Dashboard\CabangController::class)
     ->middleware(['auth', 'admin'])
     ->names('dashboard.cabang');
+Route::resource('user', \App\Http\Controllers\Dashboard\UserController::class)
+    ->middleware(['auth', 'admin'])
+    ->names('dashboard.user');

@@ -20,12 +20,19 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'role',
+        'cabang_id',
         'password',
     ];
 
     public function isAdmin()
     {
         return $this->role === 'admin';
+    }
+
+    public function cabang()
+    {
+        return $this->belongsTo(Cabang::class, 'cabang_id');
     }
 
     /**
