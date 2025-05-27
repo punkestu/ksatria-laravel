@@ -29,7 +29,7 @@
         @endforeach
         @auth
             @php
-                $haveNotification = auth()->user()->unreadNotifications->count() > 0;
+                $haveNotification = auth()->user() && auth()->user()->unreadNotifications->count() > 0;
             @endphp
             <a class="{{ $haveNotification ? 'bg-white rounded-full p-1 hover:bg-white/75' : 'hover:text-white/75' }} duration-300 flex"
                 href="{{ route('notification') }}">

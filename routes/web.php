@@ -25,7 +25,7 @@ Route::get('/notification', function (Request $request) {
         $request->session()->put('notification_read', false);
     }
     return view('notification');
-})->name('notification');
+})->middleware(["auth"])->name('notification');
 
 Route::group([
     'prefix' => '/login',

@@ -136,7 +136,7 @@ class ProgramkerjaController extends Controller
         $programKerjaItem->save();
 
         $notified = User::where('role', 'admin')->orWhere('id', Auth::id())->get();
-        ProkerStatus::notify($notified, $programKerjaItem->id, "dibuat");
+        ProkerStatus::notify($notified, Auth::user(), $programKerjaItem->id, "dibuat");
 
         $tab = $programKerjaItem->programKerja->name;
 
@@ -283,7 +283,7 @@ class ProgramkerjaController extends Controller
         }, $request->input('picture', [])));
 
         $notified = User::where('role', 'admin')->orWhere('id', Auth::id())->get();
-        ProkerStatus::notify($notified, $pengajuanproker->id, "diubah");
+        ProkerStatus::notify($notified, Auth::user(), $pengajuanproker->id, "diubah");
 
         $tab = $pengajuanproker->programKerja->name;
 
@@ -311,7 +311,7 @@ class ProgramkerjaController extends Controller
         $pengajuanproker->delete();
 
         $notified = User::where('role', 'admin')->orWhere('id', Auth::id())->get();
-        ProkerStatus::notify($notified, $pengajuanproker->id, "dihapus");
+        ProkerStatus::notify($notified, Auth::user(), $pengajuanproker->id, "dihapus");
 
         return redirect()->route('pengajuanproker.index', ['tab' => $tab])->with('alert', [
             'type' => 'success',
@@ -328,7 +328,7 @@ class ProgramkerjaController extends Controller
         $pengajuanproker->save();
 
         $notified = User::where('role', 'admin')->orWhere('id', Auth::id())->get();
-        ProkerStatus::notify($notified, $pengajuanproker->id, "di-approve");
+        ProkerStatus::notify($notified, Auth::user(), $pengajuanproker->id, "di-approve");
 
         return redirect()->back()->with('alert', [
             'type' => 'success',
@@ -345,7 +345,7 @@ class ProgramkerjaController extends Controller
         $pengajuanproker->save();
 
         $notified = User::where('role', 'admin')->orWhere('id', Auth::id())->get();
-        ProkerStatus::notify($notified, $pengajuanproker->id, "di-reject");
+        ProkerStatus::notify($notified, Auth::user(), $pengajuanproker->id, "di-reject");
 
         return redirect()->back()->with('alert', [
             'type' => 'success',
@@ -362,7 +362,7 @@ class ProgramkerjaController extends Controller
         $pengajuanproker->save();
 
         $notified = User::where('role', 'admin')->orWhere('id', Auth::id())->get();
-        ProkerStatus::notify($notified, $pengajuanproker->id, "diselesaikan");
+        ProkerStatus::notify($notified, Auth::user(), $pengajuanproker->id, "diselesaikan");
 
         return redirect()->back()->with('alert', [
             'type' => 'success',
@@ -379,7 +379,7 @@ class ProgramkerjaController extends Controller
         $pengajuanproker->save();
 
         $notified = User::where('role', 'admin')->orWhere('id', Auth::id())->get();
-        ProkerStatus::notify($notified, $pengajuanproker->id, "dibatalkan");
+        ProkerStatus::notify($notified, Auth::user(), $pengajuanproker->id, "dibatalkan");
 
         return redirect()->back()->with('alert', [
             'type' => 'success',

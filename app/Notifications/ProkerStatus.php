@@ -12,20 +12,22 @@ class ProkerStatus extends Notification
     use Queueable;
 
     protected $programKerjaItemId;
+    protected $actor;
     protected $status;
 
-    public static function notify($users, $programKerjaItemId, $status)
+    public static function notify($users, $actor, $programKerjaItemId, $status)
     {
         foreach ($users as $user) {
-            $user->notify(new self($programKerjaItemId, $status));
+            $user->notify(new self($actor, $programKerjaItemId, $status));
         }
     }
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($programKerjaItemId, $status)
+    public function __construct($actor, $programKerjaItemId, $status)
     {
+        $this->actor = $actor;
         $this->programKerjaItemId = $programKerjaItemId;
         $this->status = $status;
     }
@@ -60,9 +62,10 @@ class ProkerStatus extends Notification
     {
         return [
             "type" => "Program Kerja",
-            "message" => "Program Kerja dengan ID {$this->programKerjaItemId} telah {$this->status}.",
+            "message" => "Pengajuan Program Kerja dengan ID {$this->programKerjaItemId} telah {$this->status} oleh: {$this->actor->name}.",
             "redirect_url" => route('pengajuanproker.show', $this->programKerjaItemId, false),
             "data" => [
+                "actor" => $this->actor,
                 "programKerjaItemId" => $this->programKerjaItemId,
                 "status" => $this->status,
             ],
