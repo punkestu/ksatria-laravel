@@ -2,6 +2,49 @@
 @section('content')
     <main class="min-h-screen p-8">
         <a href="{{ route('pengajuanproker.index', ['tab' => $programkerja->name]) }}">Kembali</a>
+        <div class="flex justify-center gap-2">
+            @if (auth()->user()->isAdmin())
+                @if ($pengajuanproker->status == 'pending')
+                    <form onsubmit="return otherIntercept('Apakah Anda yakin ingin menyetujui item ini?')"
+                        action="{{ route('pengajuanproker.approve', $pengajuanproker->id) }}" method="post" style="display:inline;">
+                        @csrf
+                        @method('PATCH')
+                        <button class="underline cursor-pointer" type="submit">Approve</button>
+                    </form>
+                    <form onsubmit="return otherIntercept('Apakah Anda yakin ingin menolak item ini?')"
+                        action="{{ route('pengajuanproker.reject', $pengajuanproker->id) }}" method="post" style="display:inline;">
+                        @csrf
+                        @method('PATCH')
+                        <button class="underline cursor-pointer" type="submit">Tolak</button>
+                    </form>
+                @elseif ($pengajuanproker->status == 'approved')
+                    <form onsubmit="return otherIntercept('Apakah Anda yakin ingin menyelesaikan item ini?')"
+                        action="{{ route('pengajuanproker.complete', $pengajuanproker->id) }}" method="post" style="display:inline;">
+                        @csrf
+                        @method('PATCH')
+                        <button class="underline cursor-pointer" type="submit">Selesaikan</button>
+                    </form>
+                    <form onsubmit="return otherIntercept('Apakah Anda yakin ingin membatalkan item ini?')"
+                        action="{{ route('pengajuanproker.cancel', $pengajuanproker->id) }}" method="post" style="display:inline;">
+                        @csrf
+                        @method('PATCH')
+                        <button class="underline cursor-pointer" type="submit">Batalkan</button>
+                    </form>
+                @endif
+            @else
+                @if ($pengajuanproker->status == 'pending' || $pengajuanproker->status == 'approved')
+                    <a class="underline cursor-pointer" href="{{ route('pengajuanproker.edit', $pengajuanproker->id) }}">Edit</a>
+                @endif
+                @if ($pengajuanproker->status == 'pending')
+                    <form onsubmit="deleteIntercept(event)" action="{{ route('pengajuanproker.destroy', $pengajuanproker->id) }}"
+                        method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button class="underline cursor-pointer" type="submit">Hapus</button>
+                    </form>
+                @endif
+            @endif
+        </div>
         <div>
             <div class="mb-4">
                 <label for="program_kerja_id" class="block text-sm font-medium text-gray-700">Program Kerja</label>
@@ -36,8 +79,11 @@
                     value="{{ $pengajuanproker->end_date }}" readonly>
             </div>
 
-            <h2 class="mb-4">
+            <h2 class="mb-1">
                 Status: {{ ucfirst($pengajuanproker->status) }}
+            </h2>
+            <h2 class="mb-4">
+                Pada Cabang: {{ $pengajuanproker->cabang->name }}
             </h2>
 
             @if (

@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -11,6 +13,19 @@ Route::get('/struktur-organisasi', function () {
 Route::get('/program-kerja', function () {
     return view('program-kerja');
 })->name('program-kerja');
+Route::get('/notification', function (Request $request) {
+    if (Auth::user()->unreadNotifications->count() > 0) {
+        if ($request->session()->get('notification_read') === true) {
+            Auth::user()->unreadNotifications->markAsRead();
+            $request->session()->put('notification_read', false);
+        } else {
+            $request->session()->put('notification_read', true);
+        }
+    } else {
+        $request->session()->put('notification_read', false);
+    }
+    return view('notification');
+})->name('notification');
 
 Route::group([
     'prefix' => '/login',
@@ -22,7 +37,7 @@ Route::group([
     Route::post('/', [\App\Http\Controllers\AuthController::class, "login"])->name('login.post');
 });
 Route::get('/auth', [\App\Http\Controllers\AuthController::class, 'getSanctumTokenApi'])
-        ->name('api.auth.getSanctumToken');
+    ->name('api.auth.getSanctumToken');
 Route::get('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
 Route::get('/user-profile', function () {
     return view('user-profile');
