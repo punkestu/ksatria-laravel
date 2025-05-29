@@ -128,7 +128,6 @@
             Loading...
         </div>
     </div>
-    {{ $errors }}
     <template>
         <div data-template="picture-card" class="w-32 aspect-square relative">
             <img class="h-full w-full object-cover" src="" alt="">
