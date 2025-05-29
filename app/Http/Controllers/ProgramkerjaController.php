@@ -28,6 +28,7 @@ class ProgramkerjaController extends Controller
         }
 
         $programkerjatab = $request->get('tab');
+        $page = $request->get('page', 1);
         if ($programkerjatab) {
             $programkerja = $programkerjas->where('name', $programkerjatab)->first();
             if (!$programkerja) {
@@ -43,14 +44,17 @@ class ProgramkerjaController extends Controller
         /** @var User $me */
         $me = Auth::user();
         if ($me->isAdmin()) {
-            $myprogramkerja = $programkerja->items()->get();
+            $myprogramkerja = $programkerja->items();
         } else {
             $myprogramkerja = $programkerja->items()->where('user_id', Auth::id())
-                ->where('cabang_id', Auth::user()->cabang_id)
-                ->get();
+                ->where('cabang_id', Auth::user()->cabang_id);
         }
 
-        return view('programkerja.index', compact('programkerjas', 'myprogramkerja', 'programkerja'));
+        $totalPages = ceil($myprogramkerja->count() / 10);
+        $myprogramkerja = $myprogramkerja->paginate(10, ['*'], 'page', $page);
+
+
+        return view('programkerja.index', compact('programkerjas', 'myprogramkerja', 'programkerja', 'programkerjatab', 'page', 'totalPages'));
     }
 
     /**

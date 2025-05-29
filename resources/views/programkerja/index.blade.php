@@ -12,7 +12,8 @@
         </section>
         <section>
             @if (!auth()->user()->isAdmin())
-                <a class="underline cursor-pointer" href="{{ route('pengajuanproker.create', ['tab' => $programkerja->name]) }}">Tambah</a>
+                <a class="underline cursor-pointer"
+                    href="{{ route('pengajuanproker.create', ['tab' => $programkerja->name]) }}">Tambah</a>
             @endif
             <div class="overflow-x-auto">
                 <table class="w-[300%] md:w-[175%] xl:w-[110%]">
@@ -32,7 +33,7 @@
                     </thead>
                     <tbody>
                         @foreach ($myprogramkerja as $item)
-                            <tr class="border-b border-black/10 {{$loop->index % 2 == 0 ? 'bg-slate-50' : ''}}">
+                            <tr class="border-b border-black/10 {{ $loop->index % 2 == 0 ? 'bg-slate-50' : '' }}">
                                 <td class="px-2 py-1">{{ $item->id }}</td>
                                 <td class="px-2 py-1">{{ $item->name }}</td>
                                 <td class="px-2 py-1">
@@ -56,7 +57,8 @@
                                 @endif
                                 <td class="px-2 py-1">
                                     <div class="flex justify-center flex-wrap gap-2">
-                                        <a class="underline" href="{{ route('pengajuanproker.show', $item->id) }}">Lihat</a>
+                                        <a class="underline"
+                                            href="{{ route('pengajuanproker.show', $item->id) }}">Lihat</a>
                                         @if (auth()->user()->isAdmin())
                                             @if ($item->status == 'pending')
                                                 <form
@@ -82,7 +84,8 @@
                                                     method="post" style="display:inline;">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <button class="underline cursor-pointer" type="submit">Selesaikan</button>
+                                                    <button class="underline cursor-pointer"
+                                                        type="submit">Selesaikan</button>
                                                 </form>
                                                 <form
                                                     onsubmit="return otherIntercept('Apakah Anda yakin ingin membatalkan item ini?')"
@@ -90,7 +93,8 @@
                                                     method="post" style="display:inline;">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <button class="underline cursor-pointer" type="submit">Batalkan</button>
+                                                    <button class="underline cursor-pointer"
+                                                        type="submit">Batalkan</button>
                                                 </form>
                                             @endif
                                         @else
@@ -117,6 +121,16 @@
             @if ($myprogramkerja->isEmpty())
                 <div class="py-2">
                     <p class="text-center">Tidak ada data program kerja.</p>
+                </div>
+            @else
+                <div id="pagination" class="flex justify-between items-center py-2">
+                    <a
+                        href="{{ $page > 1 ? route('pengajuanproker.index', ['tab' => $programkerjatab, 'page' => $page - 1]) : '' }}">&laquo;
+                        Prev</a>
+                    <div>Page {{ $page }} of {{ $totalPages }}</div>
+                    <a
+                        href="{{ $page < $totalPages ? route('pengajuanproker.index', ['tab' => $programkerjatab, 'page' => $page + 1]) : '' }}">Next
+                        &raquo;</a>
                 </div>
             @endif
         </section>
