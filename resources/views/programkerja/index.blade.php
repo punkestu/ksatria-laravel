@@ -32,7 +32,7 @@
                     </thead>
                     <tbody>
                         @foreach ($myprogramkerja as $item)
-                            <tr>
+                            <tr class="border-b border-black/10 {{$loop->index % 2 == 0 ? 'bg-slate-50' : ''}}">
                                 <td class="px-2 py-1">{{ $item->id }}</td>
                                 <td class="px-2 py-1">{{ $item->name }}</td>
                                 <td class="px-2 py-1">
@@ -56,7 +56,7 @@
                                 @endif
                                 <td class="px-2 py-1">
                                     <div class="flex justify-center flex-wrap gap-2">
-                                        <a href="{{ route('pengajuanproker.show', $item->id) }}">Lihat</a>
+                                        <a class="underline" href="{{ route('pengajuanproker.show', $item->id) }}">Lihat</a>
                                         @if (auth()->user()->isAdmin())
                                             @if ($item->status == 'pending')
                                                 <form
@@ -65,7 +65,7 @@
                                                     method="post" style="display:inline;">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <button type="submit">Approve</button>
+                                                    <button class="underline cursor-pointer" type="submit">Setujui</button>
                                                 </form>
                                                 <form
                                                     onsubmit="return otherIntercept('Apakah Anda yakin ingin menolak item ini?')"
@@ -73,7 +73,7 @@
                                                     method="post" style="display:inline;">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <button type="submit">Tolak</button>
+                                                    <button class="underline cursor-pointer" type="submit">Tolak</button>
                                                 </form>
                                             @elseif ($item->status == 'approved')
                                                 <form
@@ -82,7 +82,7 @@
                                                     method="post" style="display:inline;">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <button type="submit">Selesaikan</button>
+                                                    <button class="underline cursor-pointer" type="submit">Selesaikan</button>
                                                 </form>
                                                 <form
                                                     onsubmit="return otherIntercept('Apakah Anda yakin ingin membatalkan item ini?')"
@@ -90,7 +90,7 @@
                                                     method="post" style="display:inline;">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <button type="submit">Batalkan</button>
+                                                    <button class="underline cursor-pointer" type="submit">Batalkan</button>
                                                 </form>
                                             @endif
                                         @else
