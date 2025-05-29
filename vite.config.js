@@ -11,4 +11,7 @@ export default defineConfig({
         tailwindcss(),
     ],
     publicDir: 'public',
+    build: {
+        chunkSizeWarningLimit: 1600
+    }
 });
