@@ -3,24 +3,26 @@
     <main class="min-h-screen">
         <section id="hero" class="relative h-[calc(100vh-2.5rem-0.5rem)] flex items-center">
             <div class="p-8 lg:p-28 xl:max-w-[55vw] flex flex-col items-start gap-4" data-aos="fade-up">
-                <h2 class="font-black text-7xl text-accent-1">Selamat Datang Ksatria</h2>
-                <p class="lg:max-w-[60%] text-accent-2 ps-2">Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                    Exercitationem magnam itaque sit magni asperiores labore</p>
+                <h2 class="font-black text-4xl lg:text-7xl text-accent-1">Selamat Datang Agent of Change (Ksatria)</h2>
+                <p class="lg:max-w-[65%] text-sm lg:text-base text-accent-2 ps-2">CHAMPION (change agent monitoring Platform for Internalization)
+                    merupakan suatu platform yang digunakan oleh para Agent of Change (KSATRIA) untuk melaporkan progress
+                    pelaksanaan internalisasi budaya perusahaan (corporate culture) di masing-masing lokasi.</p>
                 <a class="px-8 py-2 rounded-full bg-accent-1 hover:bg-accent-1/75 duration-300 text-white"
-                    href="">Lihat Program Kerja</a>
+                    href="{{ route('program-kerja') }}">Lihat Program Kerja</a>
             </div>
             <div class="-z-10 absolute right-0 h-full w-screen lg:ps-2 lg:w-2/3" data-aos="fade">
                 <img class="object-cover h-full opacity-25 xl:opacity-75" src="/images/hero.png" alt="hero">
             </div>
         </section>
         <section id="akhlak" class="bg-accent-2 flex flex-col md:flex-row items-center gap-4 p-8 pe-0 overflow-hidden">
-            <aside data-aos="fade-right">
+            <aside class="md:max-w-1/3" data-aos="fade-right">
                 <h2 class="font-bold text-4xl text-white">
                     AKHLAK
                 </h2>
                 <p class="text-slate-200 mt-2">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Nisl tincidunt eget nullam non.
+                    merupakan nilai-nilai utama (core values) pengelolaan sumber daya manusia (SDM) di Badan Usaha Milik
+                    Negara (BUMN) sesuai amanat dari Surat Edaran Menteri BUMN Nomor: SE-7/MBU/072020 tentang NILAI-NILAI
+                    UTAMA (CORE VALUES) SUMBER DAYA MANUSIA BADAN USAHA MILIK NEGARA
                 </p>
             </aside>
             <aside class="w-screen md:w-auto overflow-x-scroll scrollbar-hidden" data-aos="fade-left">
@@ -170,36 +172,23 @@
             </aside>
         </section>
         <section id="visimisi" class="flex flex-col md:flex-row justify-between p-8 md:p-16 gap-16" data-aos="fade-up">
-            <aside class="flex flex-col gap-2">
+            <aside class="flex flex-col gap-2 min-w-1/2">
                 <h2 class="font-bold text-4xl">VISI</h2>
-                <p class="text-justify">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Nisl tincidunt eget nullam non.
+                <p class="text-left">
+                    The trusted partner for the aviation community.
                 </p>
             </aside>
-            <aside class="flex flex-col gap-2">
+            <aside class="flex flex-col gap-2 md:max-w-1/2">
                 <h2 class="font-bold text-4xl">MISI</h2>
-                <p class="text-justify">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Nisl tincidunt eget nullam non.
+                <p class="text-left">
+                    To ensure safe and seamless air navigation through our continuous collaborative commitment towards
+                    constumer contricity, talent development, operations excellence, and technological advancement.
                 </p>
-                <hr>
-                <p class="text-justify">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Nisl tincidunt eget nullam non.
-                </p>
-                <hr>
-                <p class="text-justify">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Nisl tincidunt eget nullam non.
-                </p>
-                <hr>
             </aside>
         </section>
         <section id="video" class="p-8 md:p-16" data-aos="fade">
-            <iframe class="w-full aspect-video"
-                src="https://www.youtube.com/embed/mbkI7aKOkE0?si=WVKnIDGcgPHb8Bdi" title="YouTube video player"
-                frameborder="0"
+            <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/mbkI7aKOkE0?si=WVKnIDGcgPHb8Bdi"
+                title="YouTube video player" frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </section>
