@@ -1,7 +1,10 @@
 <?php
 
+use App\Models\Cabang;
+use App\Models\ProgramKerjaItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -26,6 +29,23 @@ Route::get('/notification', function (Request $request) {
     }
     return view('notification');
 })->middleware(["auth"])->name('notification');
+Route::get('/statistic', function () {
+    $years = ProgramKerjaItem::getYearStartToEnd();
+    if (!$years) {
+        return redirect()->route('home')->with('alert', [
+            'type' => 'warning',
+            'message' => 'Tidak ada data program kerja yang tersedia untuk statistik.'
+        ]);
+    }
+    $status = ProgramKerjaItem::getByCabang($years);
+    $thisyear = date('Y');
+    $mostApproved = ProgramKerjaItem::getMostApproved($thisyear);
+    $mostApprovedAlltime = ProgramKerjaItem::getMostApproved();
+    $longest = ProgramKerjaItem::getLongestDuration($thisyear);
+    $mostExpensive = ProgramKerjaItem::getMostExpensive($thisyear);
+    $cheapest = ProgramKerjaItem::getCheapest($thisyear);
+    return view('statistik', compact('years', 'status', 'mostApproved', 'mostApprovedAlltime', 'longest', 'mostExpensive', 'cheapest', 'thisyear'));
+})->middleware(["auth"])->name('statistic');
 
 Route::group([
     'prefix' => '/login',

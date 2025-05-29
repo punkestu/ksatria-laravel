@@ -14,96 +14,106 @@
             @if (!auth()->user()->isAdmin())
                 <a href="{{ route('pengajuanproker.create', ['tab' => $programkerja->name]) }}">Tambah</a>
             @endif
-            <table class="w-full">
-                <thead>
-                    <tr class="border-b">
-                        <th class="p-1 w-3">ID</th>
-                        <th class="text-left p-1 w-1/4">Nama Program Kerja</th>
-                        <th class="text-left p-1 w-1/3">Deskripsi</th>
-                        <th class="text-left p-1 w-1/6">Status</th>
-                        @if (auth()->user()->isAdmin())
-                            <th class="text-left p-1 w-1/6">Cabang</th>
-                            <th class="text-left p-1 w-1/6">Dibuat Oleh</th>
-                        @endif
-                        <th class="p-1">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($myprogramkerja as $item)
-                        <tr>
-                            <td>{{ $item->id }}</td>
-                            <td>{{ $item->name }}</td>
-                            <td>
-                                {{ Str::limit($item->description, 100) }}
-                            </td>
-                            <td>
-                                {{ [
-                                    'pending' => 'Pending',
-                                    'approved' => 'Approved',
-                                    'rejected' => 'Rejected',
-                                    'completed' => 'Completed',
-                                ][$item->status] ?? 'Unknown' }}
-                            </td>
+            <div class="overflow-x-auto">
+                <table class="w-[300%] md:w-[175%] xl:w-[110%]">
+                    <thead>
+                        <tr class="border-b">
+                            <th class="px-2 py-1 w-3">ID</th>
+                            <th class="text-left px-2 py-1 w-1/6">Nama Program Kerja</th>
+                            <th class="text-left px-2 py-1 w-1/5">Deskripsi</th>
+                            <th class="text-left px-2 py-1">Status</th>
+                            <th class="text-left px-2 py-1">Dari-Sampai</th>
                             @if (auth()->user()->isAdmin())
-                                <td>{{ $item->cabang->name ?? 'N/A' }}</td>
-                                <td>{{ $item->user->name ?? 'N/A' }}</td>
+                                <th class="text-left px-2 py-1">Cabang</th>
+                                <th class="text-left px-2 py-1">Dibuat Oleh</th>
                             @endif
-                            <td class="flex justify-center gap-2">
-                                <a href="{{ route('pengajuanproker.show', $item->id) }}">Lihat</a>
-                                @if (auth()->user()->isAdmin())
-                                    @if ($item->status == 'pending')
-                                        <form
-                                            onsubmit="return otherIntercept('Apakah Anda yakin ingin menyetujui item ini?')"
-                                            action="{{ route('pengajuanproker.approve', $item->id) }}" method="post"
-                                            style="display:inline;">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button type="submit">Approve</button>
-                                        </form>
-                                        <form onsubmit="return otherIntercept('Apakah Anda yakin ingin menolak item ini?')"
-                                            action="{{ route('pengajuanproker.reject', $item->id) }}" method="post"
-                                            style="display:inline;">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button type="submit">Tolak</button>
-                                        </form>
-                                    @elseif ($item->status == 'approved')
-                                        <form
-                                            onsubmit="return otherIntercept('Apakah Anda yakin ingin menyelesaikan item ini?')"
-                                            action="{{ route('pengajuanproker.complete', $item->id) }}" method="post"
-                                            style="display:inline;">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button type="submit">Selesaikan</button>
-                                        </form>
-                                        <form
-                                            onsubmit="return otherIntercept('Apakah Anda yakin ingin membatalkan item ini?')"
-                                            action="{{ route('pengajuanproker.cancel', $item->id) }}" method="post"
-                                            style="display:inline;">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button type="submit">Batalkan</button>
-                                        </form>
-                                    @endif
-                                @else
-                                    @if ($item->status == 'pending' || $item->status == 'approved')
-                                        <a href="{{ route('pengajuanproker.edit', $item->id) }}">Edit</a>
-                                    @endif
-                                    @if ($item->status == 'pending')
-                                        <form onsubmit="deleteIntercept(event)"
-                                            action="{{ route('pengajuanproker.destroy', $item->id) }}" method="POST"
-                                            style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit">Hapus</button>
-                                        </form>
-                                    @endif
-                                @endif
-                            </td>
+                            <th class="px-2 py-1 w-1/6">Aksi</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($myprogramkerja as $item)
+                            <tr>
+                                <td class="px-2 py-1">{{ $item->id }}</td>
+                                <td class="px-2 py-1">{{ $item->name }}</td>
+                                <td class="px-2 py-1">
+                                    {{ Str::limit($item->description, 50) }}
+                                </td>
+                                <td class="px-2 py-1">
+                                    {{ [
+                                        'pending' => 'Pending',
+                                        'approved' => 'Approved',
+                                        'rejected' => 'Rejected',
+                                        'completed' => 'Completed',
+                                    ][$item->status] ?? 'Unknown' }}
+                                </td>
+                                <td class="px-2 py-1">
+                                    {{ $item->start_date ? $item->start_date : 'N/A' }} -
+                                    {{ $item->end_date ? $item->end_date : 'N/A' }}
+                                </td>
+                                @if (auth()->user()->isAdmin())
+                                    <td class="px-2 py-1">{{ $item->cabang->name ?? 'N/A' }}</td>
+                                    <td class="px-2 py-1">{{ $item->user->name ?? 'N/A' }}</td>
+                                @endif
+                                <td class="px-2 py-1">
+                                    <div class="flex justify-center flex-wrap gap-2">
+                                        <a href="{{ route('pengajuanproker.show', $item->id) }}">Lihat</a>
+                                        @if (auth()->user()->isAdmin())
+                                            @if ($item->status == 'pending')
+                                                <form
+                                                    onsubmit="return otherIntercept('Apakah Anda yakin ingin menyetujui item ini?')"
+                                                    action="{{ route('pengajuanproker.approve', $item->id) }}"
+                                                    method="post" style="display:inline;">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit">Approve</button>
+                                                </form>
+                                                <form
+                                                    onsubmit="return otherIntercept('Apakah Anda yakin ingin menolak item ini?')"
+                                                    action="{{ route('pengajuanproker.reject', $item->id) }}"
+                                                    method="post" style="display:inline;">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit">Tolak</button>
+                                                </form>
+                                            @elseif ($item->status == 'approved')
+                                                <form
+                                                    onsubmit="return otherIntercept('Apakah Anda yakin ingin menyelesaikan item ini?')"
+                                                    action="{{ route('pengajuanproker.complete', $item->id) }}"
+                                                    method="post" style="display:inline;">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit">Selesaikan</button>
+                                                </form>
+                                                <form
+                                                    onsubmit="return otherIntercept('Apakah Anda yakin ingin membatalkan item ini?')"
+                                                    action="{{ route('pengajuanproker.cancel', $item->id) }}"
+                                                    method="post" style="display:inline;">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit">Batalkan</button>
+                                                </form>
+                                            @endif
+                                        @else
+                                            @if ($item->status == 'pending' || $item->status == 'approved')
+                                                <a href="{{ route('pengajuanproker.edit', $item->id) }}">Edit</a>
+                                            @endif
+                                            @if ($item->status == 'pending')
+                                                <form onsubmit="deleteIntercept(event)"
+                                                    action="{{ route('pengajuanproker.destroy', $item->id) }}"
+                                                    method="POST" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit">Hapus</button>
+                                                </form>
+                                            @endif
+                                        @endif
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
             @if ($myprogramkerja->isEmpty())
                 <div class="py-2">
                     <p class="text-center">Tidak ada data program kerja.</p>

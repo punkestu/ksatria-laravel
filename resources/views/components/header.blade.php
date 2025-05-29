@@ -1,9 +1,9 @@
 @php
     $navbar = [
         'Dashboard' => ['url' => route('dashboard.cabang.index'), 'isadmin' => true],
-        'Profil' => ['url' => '', 'isadmin' => false],
+        //'Profil' => ['url' => '', 'isadmin' => false],
         'Program Kerja' => ['url' => route('program-kerja'), 'isadmin' => false],
-        'Statistik' => ['url' => '', 'isadmin' => false],
+        'Statistik' => ['url' => route('statistic'), 'isadmin' => false],
         'Struktur Organisasi' => ['url' => route('struktur-organisasi'), 'isadmin' => false],
         'Bantuan' => ['url' => '', 'isadmin' => false],
     ];

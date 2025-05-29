@@ -1,9 +1,13 @@
 import "./bootstrap";
+import * as Charts from "./chart";
 
 import AOS from "aos";
 import jQuery from "jquery";
+import ApexCharts from "apexcharts";
 
 window.AOS = AOS;
+window.ApexCharts = ApexCharts;
+window.Charts = Charts;
 
 AOS.init({
     once: false, // animation happens only once
