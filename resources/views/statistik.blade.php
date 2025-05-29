@@ -2,17 +2,17 @@
 @section('content')
     <main class="min-h-screen p-8 flex flex-col gap-4">
         <h2 class="font-semibold text-2xl">Statistik</h2>
-        <section id="rank" class="grid grid-cols-3 gap-4">
+        <section id="rank" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
             @if ($mostApprovedAlltime)
                 <div class="shadow p-2 rounded-lg">
-                    <h3 class="text-center">Cabang dengan Program Terbanyak Sepanjang masa</h3>
+                    <h3 class="text-center">Program Terbanyak Sepanjang masa</h3>
                     <p class="font-semibold text-center">{{ $mostApprovedAlltime['cabang_name'] }}</p>
                     <p class="font-bold text-2xl text-center">{{ $mostApprovedAlltime['total'] }} Program Kerja</p>
                 </div>
             @endif
             @if ($mostApproved)
                 <div class="shadow p-2 rounded-lg">
-                    <h3 class="text-center">Cabang dengan Program Terbanyak Tahun {{ $thisyear }}</h3>
+                    <h3 class="text-center">Program Terbanyak Tahun {{ $thisyear }}</h3>
                     <p class="font-semibold text-center">{{ $mostApproved['cabang_name'] }}</p>
                     <p class="font-bold text-2xl text-center">{{ $mostApproved['total'] }} Program Kerja</p>
                 </div>
@@ -27,7 +27,7 @@
             @endif
             @if ($mostExpensive)
                 <div class="shadow p-2 rounded-lg">
-                    <h3 class="text-center">Program Termahal</h3>
+                    <h3 class="text-center">Program Termahal Tahun {{ $thisyear }}</h3>
                     <p class="font-semibold text-center">{{ $mostExpensive['cabang_name'] }} -
                         {{ $mostExpensive['name'] }} ({{ $mostExpensive['id'] }})
                     </p>
@@ -37,7 +37,7 @@
             @endif
             @if ($cheapest)
                 <div class="shadow p-2 rounded-lg">
-                    <h3 class="text-center">Program Termurah</h3>
+                    <h3 class="text-center">Program Termurah Tahun {{ $thisyear }}</h3>
                     <p class="font-semibold text-center">{{ $cheapest['cabang_name'] }} - {{ $cheapest['name'] }}
                         ({{ $cheapest['id'] }})
                     </p>

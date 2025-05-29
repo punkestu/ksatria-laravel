@@ -39,9 +39,12 @@ class ProgramKerjaItem extends Model
         return $this->belongsTo(User::class);
     }
 
-    public static function getYearStartToEnd()
+    public static function getYearStartToEnd($cabang_id = null)
     {
         $years = ProgramKerjaItem::selectRaw('YEAR(MIN(start_date)) as start_date, YEAR(MAX(start_date)) as end_date')
+            ->when($cabang_id, function ($query) use ($cabang_id) {
+                return $query->where('cabang_id', $cabang_id);
+            })
             ->get()
             ->map(function ($item) {
                 return [
@@ -57,10 +60,13 @@ class ProgramKerjaItem extends Model
         return $years;
     }
 
-    public static function getByCabang($years)
+    public static function getByCabang($years, $cabang_id = null)
     {
         return ProgramKerjaItem::with(['cabang'])->groupBy(['cabang_id', 'status', 'year'])
             ->selectRaw('cabang_id, status, YEAR(start_date) as year, COUNT(*) as total')
+            ->when($cabang_id, function ($query) use ($cabang_id) {
+                return $query->where('cabang_id', $cabang_id);
+            })
             ->havingRaw('year IN (' . implode(',', $years) . ')')
             ->get()
             ->reduce(function ($carry, $item) use ($years) {
