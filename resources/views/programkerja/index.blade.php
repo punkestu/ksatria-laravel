@@ -12,7 +12,7 @@
         </section>
         <section>
             @if (!auth()->user()->isAdmin())
-                <a href="{{ route('pengajuanproker.create', ['tab' => $programkerja->name]) }}">Tambah</a>
+                <a class="underline cursor-pointer" href="{{ route('pengajuanproker.create', ['tab' => $programkerja->name]) }}">Tambah</a>
             @endif
             <div class="overflow-x-auto">
                 <table class="w-[300%] md:w-[175%] xl:w-[110%]">
