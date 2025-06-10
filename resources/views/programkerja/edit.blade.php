@@ -12,9 +12,15 @@
             <div class="mb-4">
                 <label for="program_kerja_id" class="block text-sm font-medium text-gray-700">Program Kerja</label>
                 <select id="program_kerja_id" name="program_kerja_id" required
-                    class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                    <option value="">Pilih Program Kerja</option>
+                    class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm read-only:bg-gray-50"
+                    {{ $pengajuanproker->status == 'pending' ? '' : 'readonly' }}>
+                    @if ($pengajuanproker->status == 'pending')
+                        <option value="">Pilih Program Kerja</option>
+                    @endif
                     @foreach ($programkerjas as $proker)
+                        @if ($pengajuanproker->status != 'pending' && $proker->id != $pengajuanproker->program_kerja_id)
+                            @continue
+                        @endif
                         <option value="{{ $proker->id }}"
                             {{ (old('program_kerja_id') ?? $pengajuanproker->program_kerja_id) == $proker->id ? 'selected' : '' }}>
                             {{ $proker->name }}</option>
@@ -27,8 +33,9 @@
             <div class="mb-4">
                 <label for="name" class="block text-sm font-medium text-gray-700">Nama</label>
                 <input type="text" id="name" name="name" required
-                    class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    value="{{ old('name') ?? $pengajuanproker->name }}">
+                    class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm read-only:bg-gray-50"
+                    value="{{ old('name') ?? $pengajuanproker->name }}"
+                    {{ $pengajuanproker->status == 'pending' ? '' : 'readonly' }}>
                 @if ($errors->has('name'))
                     <p class="text-red-500 text-xs mt-1">{{ $errors->first('name') }}</p>
                 @endif
@@ -36,7 +43,8 @@
             <div class="mb-4">
                 <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi</label>
                 <textarea id="description" name="description" required
-                    class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">{{ old('description') ?? $pengajuanproker->description }}</textarea>
+                    class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm read-only:bg-gray-50"
+                    {{ $pengajuanproker->status == 'pending' ? '' : 'readonly' }}>{{ old('description') ?? $pengajuanproker->description }}</textarea>
                 @if ($errors->has('description'))
                     <p class="text-red-500 text-xs mt-1">{{ $errors->first('description') }}</p>
                 @endif
@@ -44,8 +52,9 @@
             <div class="mb-4">
                 <label for="start_date" class="block text-sm font-medium text-gray-700">Tanggal Mulai</label>
                 <input type="date" id="start_date" name="start_date" required
-                    class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    value="{{ old('start_date') ?? $pengajuanproker->start_date }}">
+                    class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm read-only:bg-gray-50"
+                    value="{{ old('start_date') ?? $pengajuanproker->start_date }}"
+                    {{ $pengajuanproker->status == 'pending' ? '' : 'readonly' }}>
                 @if ($errors->has('start_date'))
                     <p class="text-red-500 text-xs mt-1">{{ $errors->first('start_date') }}</p>
                 @endif
@@ -53,8 +62,9 @@
             <div class="mb-4">
                 <label for="end_date" class="block text-sm font-medium text-gray-700">Tanggal Selesai</label>
                 <input type="date" id="end_date" name="end_date" required
-                    class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    value="{{ old('end_date') ?? $pengajuanproker->end_date }}">
+                    class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm read-only:bg-gray-50"
+                    value="{{ old('end_date') ?? $pengajuanproker->end_date }}"
+                    {{ $pengajuanproker->status == 'pending' ? '' : 'readonly' }}>
                 @if ($errors->has('end_date'))
                     <p class="text-red-500 text-xs mt-1">{{ $errors->first('end_date') }}</p>
                 @endif
@@ -73,7 +83,7 @@
                 </div>
                 {{-- pictures --}}
                 <div class="mb-4">
-                    <label for="pictures" class="block text-sm font-medium text-gray-700">Gambar</label>
+                    <label for="pictures" class="block text-sm font-medium text-gray-700">Gambar (Bukti kegiatan, Struk, dll)</label>
                     <div class="flex flex-wrap gap-2 mt-1">
                         @foreach (old('picture') ?? $pengajuanproker->pictures as $picture)
                             <div class="w-32 aspect-square relative">

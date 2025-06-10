@@ -1,68 +1,71 @@
 @extends('layouts.base')
 @section('content')
-    <main class="min-h-screen p-8 flex flex-col gap-4">
+    <main class="min-h-screen p-8 flex flex-col gap-4 bg-gray-50">
         <h2 class="font-semibold text-2xl">Statistik</h2>
-        <section id="rank" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
-            @if ($mostApprovedAlltime)
-                <div class="shadow p-2 rounded-lg">
-                    <h3 class="text-center">Program Terbanyak Sepanjang masa</h3>
-                    <p class="font-semibold text-center">{{ $mostApprovedAlltime['cabang_name'] }}</p>
-                    <p class="font-bold text-2xl text-center">{{ $mostApprovedAlltime['total'] }} Program Kerja</p>
-                </div>
-            @endif
-            @if ($mostApproved)
-                <div class="shadow p-2 rounded-lg">
-                    <h3 class="text-center">Program Terbanyak Tahun {{ $thisyear }}</h3>
-                    <p class="font-semibold text-center">{{ $mostApproved['cabang_name'] }}</p>
-                    <p class="font-bold text-2xl text-center">{{ $mostApproved['total'] }} Program Kerja</p>
-                </div>
-            @endif
-            @if ($longest)
-                <div class="shadow p-2 rounded-lg">
-                    <h3 class="text-center">Program Terlama Tahun {{ $thisyear }}</h3>
-                    <p class="font-semibold text-center">{{ $longest['cabang_name'] }} - {{ $longest['name'] }}
-                        ({{ $longest['id'] }})</p>
-                    <p class="font-bold text-2xl text-center">{{ $longest['max_duration'] }} hari</p>
-                </div>
-            @endif
-            @if ($mostExpensive)
-                <div class="shadow p-2 rounded-lg">
-                    <h3 class="text-center">Program Termahal Tahun {{ $thisyear }}</h3>
-                    <p class="font-semibold text-center">{{ $mostExpensive['cabang_name'] }} -
-                        {{ $mostExpensive['name'] }} ({{ $mostExpensive['id'] }})
-                    </p>
-                    <p class="font-bold text-2xl text-center">
-                        Rp {{ number_format($mostExpensive['max_budget'], 2, ',', '.') }}</p>
-                </div>
-            @endif
-            @if ($cheapest)
-                <div class="shadow p-2 rounded-lg">
-                    <h3 class="text-center">Program Termurah Tahun {{ $thisyear }}</h3>
-                    <p class="font-semibold text-center">{{ $cheapest['cabang_name'] }} - {{ $cheapest['name'] }}
-                        ({{ $cheapest['id'] }})
-                    </p>
-                    <p class="font-bold text-2xl text-center">Rp {{ number_format($cheapest['min_budget'], 2, ',', '.') }}
-                    </p>
-                </div>
-            @endif
-        </section>
-        <section id="graphs" class="grid md:grid-cols-2">
-            <div id="graph-all" class="overflow-x-auto overflow-y-hidden">
+        @if (auth()->user()->isAdmin())
+            <section id="rank" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+                @if ($mostApprovedAlltime)
+                    <div class="shadow p-4 bg-white rounded-lg">
+                        <h3 class="text-center">Program Terbanyak Sepanjang masa</h3>
+                        <p class="font-semibold text-center">{{ $mostApprovedAlltime['cabang_name'] }}</p>
+                        <p class="font-bold text-2xl text-center">{{ $mostApprovedAlltime['total'] }} Program Kerja</p>
+                    </div>
+                @endif
+                @if ($mostApproved)
+                    <div class="shadow p-4 bg-white rounded-lg">
+                        <h3 class="text-center">Program Terbanyak Tahun {{ $thisyear }}</h3>
+                        <p class="font-semibold text-center">{{ $mostApproved['cabang_name'] }}</p>
+                        <p class="font-bold text-2xl text-center">{{ $mostApproved['total'] }} Program Kerja</p>
+                    </div>
+                @endif
+                @if ($longest)
+                    <div class="shadow p-4 bg-white rounded-lg">
+                        <h3 class="text-center">Program Terlama Tahun {{ $thisyear }}</h3>
+                        <p class="font-semibold text-center">{{ $longest['cabang_name'] }} - {{ $longest['name'] }}
+                            ({{ $longest['id'] }})</p>
+                        <p class="font-bold text-2xl text-center">{{ $longest['max_duration'] }} hari</p>
+                    </div>
+                @endif
+                @if ($mostExpensive)
+                    <div class="shadow p-4 bg-white rounded-lg">
+                        <h3 class="text-center">Program Termahal Tahun {{ $thisyear }}</h3>
+                        <p class="font-semibold text-center">{{ $mostExpensive['cabang_name'] }} -
+                            {{ $mostExpensive['name'] }} ({{ $mostExpensive['id'] }})
+                        </p>
+                        <p class="font-bold text-2xl text-center">
+                            Rp {{ number_format($mostExpensive['max_budget'], 2, ',', '.') }}</p>
+                    </div>
+                @endif
+                @if ($cheapest)
+                    <div class="shadow p-4 bg-white rounded-lg">
+                        <h3 class="text-center">Program Termurah Tahun {{ $thisyear }}</h3>
+                        <p class="font-semibold text-center">{{ $cheapest['cabang_name'] }} - {{ $cheapest['name'] }}
+                            ({{ $cheapest['id'] }})
+                        </p>
+                        <p class="font-bold text-2xl text-center">Rp
+                            {{ number_format($cheapest['min_budget'], 2, ',', '.') }}
+                        </p>
+                    </div>
+                @endif
+            </section>
+        @endif
+        <section id="graphs" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+            <div id="graph-all" class="md:col-span-2 xl:col-span-3 shadow p-4 bg-white rounded-lg overflow-x-auto overflow-y-hidden">
+                <div class="w-screen"></div>
+            </div>
+            <div id="graph-pending" class="md:col-span-2 shadow p-4 bg-white rounded-lg overflow-x-auto overflow-y-hidden">
+                <div class="w-screen"></div>
+            </div>
+            <div id="graph-approved" class="shadow p-4 bg-white rounded-lg overflow-x-auto overflow-y-hidden">
                 <div class="w-screen md:w-[75vw] xl:w-[50vw]"></div>
             </div>
-            <div id="graph-pending" class="overflow-x-auto overflow-y-hidden">
+            <div id="graph-rejected" class="shadow p-4 bg-white rounded-lg overflow-x-auto overflow-y-hidden">
                 <div class="w-screen md:w-[75vw] xl:w-[50vw]"></div>
             </div>
-            <div id="graph-approved" class="overflow-x-auto overflow-y-hidden">
+            <div id="graph-completed" class="shadow p-4 bg-white rounded-lg overflow-x-auto overflow-y-hidden">
                 <div class="w-screen md:w-[75vw] xl:w-[50vw]"></div>
             </div>
-            <div id="graph-rejected" class="overflow-x-auto overflow-y-hidden">
-                <div class="w-screen md:w-[75vw] xl:w-[50vw]"></div>
-            </div>
-            <div id="graph-completed" class="overflow-x-auto overflow-y-hidden">
-                <div class="w-screen md:w-[75vw] xl:w-[50vw]"></div>
-            </div>
-            <div id="graph-canceled" class="overflow-x-auto overflow-y-hidden">
+            <div id="graph-canceled" class="shadow p-4 bg-white rounded-lg overflow-x-auto overflow-y-hidden">
                 <div class="w-screen md:w-[75vw] xl:w-[50vw]"></div>
             </div>
         </section>

@@ -275,11 +275,13 @@ class ProgramkerjaController extends Controller
                 ->withErrors($validation)->withInput();
         }
 
-        $pengajuanproker->program_kerja_id = $request->input('program_kerja_id');
-        $pengajuanproker->name = $request->input('name');
-        $pengajuanproker->description = $request->input('description');
-        $pengajuanproker->start_date = $request->input('start_date');
-        $pengajuanproker->end_date = $request->input('end_date');
+        if ($pengajuanproker->status == 'pending') {
+            $pengajuanproker->program_kerja_id = $request->input('program_kerja_id');
+            $pengajuanproker->name = $request->input('name');
+            $pengajuanproker->description = $request->input('description');
+            $pengajuanproker->start_date = $request->input('start_date');
+            $pengajuanproker->end_date = $request->input('end_date');
+        }
         $pengajuanproker->budget = $request->input('budget', 0);
         $pengajuanproker->save();
         $pengajuanproker->pictures()->sync(array_map(function ($picture) {
