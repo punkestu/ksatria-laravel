@@ -4,17 +4,21 @@
         <div class="flex justify-between items-center mb-2">
             <a class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 cursor-pointer"
                 href="{{ route('agenda.index') }}">Kembali</a>
-            <aside class="flex items-center gap-2">
-                <a class="bg-yellow-500 text-white px-4 py-1 rounded hover:bg-yellow-600"
-                    href="{{ route('agenda.edit', $agenda->id) }}">Edit</a>
-                <form action="{{ route('agenda.destroy', $agenda->id) }}" method="post" onsubmit="return confirm('Apakah Anda yakin ingin menghapus item ini?')" class="inline">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 cursor-pointer">
-                        Hapus
-                    </button>
-                </form>
-            </aside>
+            @if (auth()->user() && auth()->user()->isAdmin())
+                <aside class="flex items-center gap-2">
+                    <a class="bg-yellow-500 text-white px-4 py-1 rounded hover:bg-yellow-600"
+                        href="{{ route('agenda.edit', $agenda->id) }}">Edit</a>
+                    <form action="{{ route('agenda.destroy', $agenda->id) }}" method="post"
+                        onsubmit="return confirm('Apakah Anda yakin ingin menghapus item ini?')" class="inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"
+                            class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 cursor-pointer">
+                            Hapus
+                        </button>
+                    </form>
+                </aside>
+            @endif
         </div>
         <div>
             @csrf
