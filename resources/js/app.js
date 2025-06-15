@@ -5,13 +5,15 @@ import AOS from "aos";
 import jQuery from "jquery";
 import ApexCharts from "apexcharts";
 import ApexTree from "apextree";
-import MicroModal from 'micromodal';
+import MicroModal from "micromodal";
+import * as Fullcalendar from "fullcalendar";
 
 window.AOS = AOS;
 window.ApexCharts = ApexCharts;
 window.ApexTree = ApexTree;
 window.Charts = Charts;
 window.MicroModal = MicroModal;
+window.FullCalendar = Fullcalendar;
 
 MicroModal.init();
 

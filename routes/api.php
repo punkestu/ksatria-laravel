@@ -17,4 +17,8 @@ Route::group([
     Route::get('/pictures', [\App\Http\Controllers\PictureController::class, 'getAllPicturesApi'])
         ->name('api.pictures.index')
         ->middleware('auth:sanctum');
+
+    Route::get('/agenda', [\App\Http\Controllers\AgendaController::class, 'getAgendaApi'])
+        ->name('api.agenda.index')
+        ->middleware('auth:sanctum');
 });

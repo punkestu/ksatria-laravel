@@ -77,6 +77,10 @@ Route::get('/user-profile', function () {
     return view('user-profile');
 })->name('user-profile')->middleware('auth');
 
+Route::resource('agenda', \App\Http\Controllers\AgendaController::class)
+    ->middleware(['auth'])
+    ->names('agenda');
+
 Route::resource('cabang', \App\Http\Controllers\Dashboard\CabangController::class)
     ->middleware(['auth', 'admin'])
     ->names('dashboard.cabang');

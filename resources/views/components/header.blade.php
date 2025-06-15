@@ -1,5 +1,6 @@
 @php
     $navbar = [
+        'Agenda' => ['url' => route('agenda.index'), 'isadmin' => false, 'redirect' => false],
         'Program Kerja' => ['url' => route('program-kerja'), 'isadmin' => false, 'redirect' => false],
         'Statistik' => ['url' => route('statistic'), 'isadmin' => false, 'redirect' => false],
         'Struktur AOC' => ['url' => route('struktur-organisasi'), 'isadmin' => false, 'redirect' => false],
@@ -80,7 +81,7 @@
     </nav>
 </header>
 <nav id="nav-slide"
-    class="w-screen flex flex-col fixed -top-full items-center justify-end grow bg-white z-10 transition-all duration-500 ease-in-out shadow">
+    class="w-screen flex xl:hidden flex-col fixed -top-full items-center justify-end grow bg-white z-10 transition-all duration-500 ease-in-out shadow">
     @foreach ($navbar as $key => $data)
         @if ($data['isadmin'] && (!auth()->user() || !auth()->user()->isAdmin()))
             @continue
