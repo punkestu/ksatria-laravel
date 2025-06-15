@@ -8,7 +8,7 @@
         <section id="program-kerja" class="flex justify-center gap-4 flex-wrap" data-aos="fade-up">
             <a href="{{ route('pengajuanproker.index', ['tab' => 'KSATRIA BAIK']) }}" class="bg-white p-4 rounded-lg flex gap-4">
                 <div class="w-36 h-44 bg-gray-500 rounded-md">
-                    <img class="object-cover object-top w-full h-full scale-100 hover:scale-125 duration-500" src="/images/program-kerja/ksatria-baik.jpeg" alt="Ksatria Baik">
+                    <img class="object-cover object-top w-full h-full scale-100 hover:scale-125 duration-500" src="/images/program-kerja/KSATRIA BAIK.png" alt="Ksatria Baik">
                 </div>
                 <aside class="w-52 flex flex-col">
                     <h3 class="text-2xl font-bold">KSATRIA BAIK</h3>
@@ -20,6 +20,7 @@
             </a>
             <a href="{{ route('pengajuanproker.index', ['tab' => 'KSATRIA SALAM']) }}" class="bg-white p-4 rounded-lg flex gap-4">
                 <div class="w-36 h-44 bg-gray-500 rounded-md">
+                    <img class="object-cover object-top w-full h-full scale-100 hover:scale-125 duration-500" src="/images/program-kerja/KSATRIA SALAM.png" alt="Ksatria Salam">
                 </div>
                 <aside class="w-52 flex flex-col">
                     <h3 class="text-2xl font-bold">KSATRIA SALAM</h3>
@@ -30,6 +31,7 @@
             </a>
             <a href="{{ route('pengajuanproker.index', ['tab' => 'KSATRIA PINTAR']) }}" class="bg-white p-4 rounded-lg flex gap-4">
                 <div class="w-36 h-44 bg-gray-500 rounded-md">
+                    <img class="object-cover object-top w-full h-full scale-100 hover:scale-125 duration-500" src="/images/program-kerja/KSATRIA PINTAR.png" alt="Ksatria Pintar">
                 </div>
                 <aside class="w-52 flex flex-col">
                     <h3 class="text-2xl font-bold">KSATRIA PINTAR</h3>
@@ -42,7 +44,7 @@
             </a>
             <a href="{{ route('pengajuanproker.index', ['tab' => 'KSATRIA RESIK']) }}" class="bg-white p-4 rounded-lg flex gap-4">
                 <div class="w-36 h-44 bg-gray-500 rounded-md">
-                    <img class="object-cover object-top w-full h-full scale-100 hover:scale-125 duration-500" src="/images/program-kerja/ksatria-resik.jpeg" alt="Ksatria Resik">
+                    <img class="object-cover object-top w-full h-full scale-100 hover:scale-125 duration-500" src="/images/program-kerja/KSATRIA RESIK.png" alt="Ksatria Resik">
                 </div>
                 <aside class="w-52 flex flex-col">
                     <h3 class="text-2xl font-bold">
@@ -56,6 +58,7 @@
             </a>
             <a href="{{ route('pengajuanproker.index', ['tab' => 'KSATRIA BISA']) }}" class="bg-white p-4 rounded-lg flex gap-4">
                 <div class="w-36 h-44 bg-gray-500 rounded-md">
+                    <img class="object-cover object-top w-full h-full scale-100 hover:scale-125 duration-500" src="/images/program-kerja/KSATRIA BISA.png" alt="Ksatria Bisa">
                 </div>
                 <aside class="w-52 flex flex-col">
                     <h3 class="text-2xl font-bold">
@@ -70,6 +73,7 @@
             </a>
             <a href="{{ route('pengajuanproker.index', ['tab' => 'KSATRIA SEHAT']) }}" class="bg-white p-4 rounded-lg flex gap-4">
                 <div class="w-36 h-44 bg-gray-500 rounded-md">
+                    <img class="object-cover object-top w-full h-full scale-100 hover:scale-125 duration-500" src="/images/program-kerja/KSATRIA SEHAT.png" alt="Ksatria Sehat">
                 </div>
                 <aside class="w-52 flex flex-col">
                     <h3 class="text-2xl font-bold">
@@ -83,6 +87,7 @@
             </a>
             <a href="{{ route('pengajuanproker.index', ['tab' => 'KSATRIA S.H.A.R.E']) }}" class="bg-white p-4 rounded-lg flex gap-4">
                 <div class="w-36 h-44 bg-gray-500 rounded-md">
+                    <img class="object-cover object-top w-full h-full scale-100 hover:scale-125 duration-500" src="/images/program-kerja/KSATRIA SHARE.png" alt="Ksatria Share">
                 </div>
                 <aside class="w-52 flex flex-col">
                     <h3 class="text-2xl font-bold">
