@@ -32,10 +32,14 @@ class CabangController extends Controller
     {
         $validation = validator($request->all(), [
             'name' => 'required|string|max:255',
+            'kaisar' => 'required|string|max:255',
         ], [
             'name.required' => 'Nama cabang harus diisi.',
             'name.string' => 'Nama cabang harus berupa teks.',
             'name.max' => 'Nama cabang tidak boleh lebih dari 255 karakter.',
+            'kaisar.required' => 'Nama kaisar harus diisi.',
+            'kaisar.string' => 'Nama kaisar harus berupa teks.',
+            'kaisar.max' => 'Nama kaisar tidak boleh lebih dari 255 karakter.',
         ]);
 
         if ($validation->fails()) {
@@ -50,6 +54,7 @@ class CabangController extends Controller
 
         Cabang::create([
             'name' => $request->name,
+            'kaisar' => $request->kaisar,
         ]);
 
         return redirect()->route('dashboard.cabang.index')
@@ -82,10 +87,14 @@ class CabangController extends Controller
     {
         $validation = validator($request->all(), [
             'name' => 'required|string|max:255',
+            'kaisar' => 'required|string|max:255',
         ], [
             'name.required' => 'Nama cabang harus diisi.',
             'name.string' => 'Nama cabang harus berupa teks.',
             'name.max' => 'Nama cabang tidak boleh lebih dari 255 karakter.',
+            'kaisar.required' => 'Nama kaisar harus diisi.',
+            'kaisar.string' => 'Nama kaisar harus berupa teks.',
+            'kaisar.max' => 'Nama kaisar tidak boleh lebih dari 255 karakter.',
         ]);
 
         if ($validation->fails()) {
@@ -100,6 +109,7 @@ class CabangController extends Controller
 
         $cabang->update([
             'name' => $request->name,
+            'kaisar' => $request->kaisar,
         ]);
 
         return redirect()->route('dashboard.cabang.index')

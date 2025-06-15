@@ -4,10 +4,16 @@ import * as Charts from "./chart";
 import AOS from "aos";
 import jQuery from "jquery";
 import ApexCharts from "apexcharts";
+import ApexTree from "apextree";
+import MicroModal from 'micromodal';
 
 window.AOS = AOS;
 window.ApexCharts = ApexCharts;
+window.ApexTree = ApexTree;
 window.Charts = Charts;
+window.MicroModal = MicroModal;
+
+MicroModal.init();
 
 AOS.init({
     once: false, // animation happens only once

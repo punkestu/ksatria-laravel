@@ -1,50 +1,69 @@
 @extends('layouts.base')
 @section('content')
     <main class="min-h-screen p-8">
-        <a href="{{ route('pengajuanproker.index', ['tab' => $programkerja->name]) }}">Kembali</a>
-        <div class="flex justify-center gap-2">
+        <a class="bg-red-500 text-white px-4 py-1 rounded mb-4 inline-block"
+            href="{{ route('pengajuanproker.index', ['tab' => $programkerja->name]) }}">Kembali</a>
+
+        <div class="flex justify-end gap-2">
             @if (auth()->user()->isAdmin())
                 @if ($pengajuanproker->status == 'pending')
                     <form onsubmit="return otherIntercept('Apakah Anda yakin ingin menyetujui item ini?')"
-                        action="{{ route('pengajuanproker.approve', $pengajuanproker->id) }}" method="post" style="display:inline;">
+                        action="{{ route('pengajuanproker.approve', $pengajuanproker->id) }}" method="post"
+                        style="display:inline;">
                         @csrf
                         @method('PATCH')
-                        <button class="underline cursor-pointer" type="submit">Approve</button>
+                        <button class="bg-green-500 text-white px-4 py-1 rounded mb-4 inline-block cursor-pointer"
+                            type="submit">Approve</button>
                     </form>
                     <form onsubmit="return otherIntercept('Apakah Anda yakin ingin menolak item ini?')"
-                        action="{{ route('pengajuanproker.reject', $pengajuanproker->id) }}" method="post" style="display:inline;">
+                        action="{{ route('pengajuanproker.reject', $pengajuanproker->id) }}" method="post"
+                        style="display:inline;">
                         @csrf
                         @method('PATCH')
-                        <button class="underline cursor-pointer" type="submit">Tolak</button>
-                    </form>
-                @elseif ($pengajuanproker->status == 'approved')
-                    <form onsubmit="return otherIntercept('Apakah Anda yakin ingin menyelesaikan item ini?')"
-                        action="{{ route('pengajuanproker.complete', $pengajuanproker->id) }}" method="post" style="display:inline;">
-                        @csrf
-                        @method('PATCH')
-                        <button class="underline cursor-pointer" type="submit">Selesaikan</button>
-                    </form>
-                    <form onsubmit="return otherIntercept('Apakah Anda yakin ingin membatalkan item ini?')"
-                        action="{{ route('pengajuanproker.cancel', $pengajuanproker->id) }}" method="post" style="display:inline;">
-                        @csrf
-                        @method('PATCH')
-                        <button class="underline cursor-pointer" type="submit">Batalkan</button>
+                        <button class="bg-red-500 text-white px-4 py-1 rounded mb-4 inline-block cursor-pointer"
+                            type="submit">Tolak</button>
                     </form>
                 @endif
             @else
                 @if ($pengajuanproker->status == 'pending' || $pengajuanproker->status == 'approved')
-                    <a class="underline cursor-pointer" href="{{ route('pengajuanproker.edit', $pengajuanproker->id) }}">Edit</a>
+                    <a class="bg-yellow-500 text-white px-4 py-1 rounded mb-4 inline-block cursor-pointer"
+                        href="{{ route('pengajuanproker.edit', $pengajuanproker->id) }}">Edit</a>
                 @endif
                 @if ($pengajuanproker->status == 'pending')
-                    <form onsubmit="deleteIntercept(event)" action="{{ route('pengajuanproker.destroy', $pengajuanproker->id) }}"
-                        method="POST" style="display:inline;">
+                    <form onsubmit="deleteIntercept(event)"
+                        action="{{ route('pengajuanproker.destroy', $pengajuanproker->id) }}" method="POST"
+                        style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button class="underline cursor-pointer" type="submit">Hapus</button>
+                        <button class="bg-red-500 text-white px-4 py-1 rounded mb-4 inline-block cursor-pointer"
+                            type="submit">Hapus</button>
                     </form>
                 @endif
             @endif
         </div>
+
+        <div class="flex flex-col items-end">
+            @php
+                $status =
+                    [
+                        'pending' => 'Diajukan',
+                        'approved' => 'Disetujui',
+                        'rejected' => 'Ditolak',
+                        'completed' => 'Selesai',
+                        'cancelled' => 'Dibatalkan',
+                    ][$pengajuanproker->status] ?? 'Unknown';
+            @endphp
+            <h2 class="mb-1">
+                Status: <span
+                    class="px-3 py-1 text-white rounded-full {{ $pengajuanproker->status == 'pending' ? 'bg-yellow-500' : '' }} {{ $pengajuanproker->status == 'approved' ? 'bg-green-500' : '' }} {{ $pengajuanproker->status == 'rejected' ? 'bg-red-500' : '' }} {{ $pengajuanproker->status == 'completed' ? 'bg-blue-500' : '' }} {{ $pengajuanproker->status == 'cancelled' ? 'bg-gray-500' : '' }}">
+                    {{ $status }}
+                </span>
+            </h2>
+            <h2 class="mb-4">
+                Pada Cabang: {{ $pengajuanproker->cabang->name }}
+            </h2>
+        </div>
+
         <div>
             <div class="mb-4">
                 <label for="program_kerja_id" class="block text-sm font-medium text-gray-700">Program Kerja</label>
@@ -79,24 +98,10 @@
                     value="{{ $pengajuanproker->end_date }}" readonly>
             </div>
 
-            <h2 class="mb-1">
-                Status: {{ ucfirst($pengajuanproker->status) }}
-            </h2>
-            <h2 class="mb-4">
-                Pada Cabang: {{ $pengajuanproker->cabang->name }}
-            </h2>
-
             @if (
                 $pengajuanproker->status === 'approved' ||
                     $pengajuanproker->status === 'rejected' ||
                     $pengajuanproker->status === 'completed')
-                {{-- budget --}}
-                <div class="mb-4">
-                    <label for="budget" class="block text-sm font-medium text-gray-700">Anggaran</label>
-                    <input type="number" id="budget" name="budget" required
-                        class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                        value="{{ old('budget') ?? $pengajuanproker->budget }}" readonly>
-                </div>
                 @if ($pengajuanproker->pictures->isNotEmpty())
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700">Gambar</label>
@@ -107,6 +112,19 @@
                                 </div>
                             @endforeach
                         </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="keterangan" class="block text-sm font-medium text-gray-700">Keterangan</label>
+                        <textarea id="keterangan" name="keterangan" required
+                            class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            readonly>{{ $pengajuanproker->keterangan }}</textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label for="tgl_selesai" class="block text-sm font-medium text-gray-700">Diselesaikan
+                            Tanggal</label>
+                        <input type="date" id="tgl_selesai" name="tgl_selesai" required
+                            class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            value="{{ $pengajuanproker->tgl_selesai }}" readonly>
                     </div>
                 @endif
             @endif

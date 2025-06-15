@@ -36,7 +36,7 @@
             </aside>
             <aside class="order-1 lg:order-2 col-span-6 lg:col-span-5">
                 <div class="overflow-x-auto">
-                    <table class="max-w-[300%] md:max-w-[175%] xl:max-w-[150%]">
+                    <table class="w-[500vw] md:w-[175vw] xl:w-[120vw] 2xl:w-[80vw]">
                         <thead>
                             <tr class="border-b">
                                 <th class="px-2 py-1 w-3">No.</th>
@@ -45,6 +45,7 @@
                                 <th class="text-left px-2 py-1 w-1/5">Deskripsi</th>
                                 <th class="text-left px-2 py-1">Status</th>
                                 <th class="text-left px-2 py-1">Dari-Sampai</th>
+                                <th class="text-left px-2 py-1">Tanggal Selesai</th>
                                 @if (auth()->user()->isAdmin())
                                     <th class="text-left px-2 py-1">Cabang</th>
                                     <th class="text-left px-2 py-1">Dibuat Oleh</th>
@@ -83,6 +84,9 @@
                                             {{ $item->start_date ? $item->start_date : 'N/A' }} -
                                             {{ $item->end_date ? $item->end_date : 'N/A' }}
                                     </td>
+                                    <td class="px-2 py-1">
+                                        {{ $item->tgl_selesai ? $item->tgl_selesai : 'N/A' }}
+                                    </td>
                                     @if (auth()->user()->isAdmin())
                                         <td class="px-2 py-1">{{ $item->cabang->name ?? 'N/A' }}</td>
                                         <td class="px-2 py-1">{{ $item->user->name ?? 'N/A' }}</td>
@@ -99,7 +103,7 @@
                                                         method="post" style="display:inline;">
                                                         @csrf
                                                         @method('PATCH')
-                                                        <button class="underline cursor-pointer"
+                                                        <button class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 cursor-pointer"
                                                             type="submit">Setujui</button>
                                                     </form>
                                                     <form
@@ -108,27 +112,8 @@
                                                         method="post" style="display:inline;">
                                                         @csrf
                                                         @method('PATCH')
-                                                        <button class="underline cursor-pointer"
+                                                        <button class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 cursor-pointer"
                                                             type="submit">Tolak</button>
-                                                    </form>
-                                                @elseif ($item->status == 'approved')
-                                                    <form
-                                                        onsubmit="return otherIntercept('Apakah Anda yakin ingin menyelesaikan item ini?')"
-                                                        action="{{ route('pengajuanproker.complete', $item->id) }}"
-                                                        method="post" style="display:inline;">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <button class="underline cursor-pointer"
-                                                            type="submit">Selesaikan</button>
-                                                    </form>
-                                                    <form
-                                                        onsubmit="return otherIntercept('Apakah Anda yakin ingin membatalkan item ini?')"
-                                                        action="{{ route('pengajuanproker.cancel', $item->id) }}"
-                                                        method="post" style="display:inline;">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <button class="underline cursor-pointer"
-                                                            type="submit">Batalkan</button>
                                                     </form>
                                                 @endif
                                             @else

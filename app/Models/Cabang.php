@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\DB;
 class Cabang extends Model
 {
     protected $fillable = [
-        'name'
+        'name',
+        'kaisar',
     ];
 
     public function programKerjaItems()

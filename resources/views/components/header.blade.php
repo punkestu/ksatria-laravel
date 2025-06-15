@@ -1,11 +1,13 @@
 @php
     $navbar = [
-        'Dashboard' => ['url' => route('dashboard.cabang.index'), 'isadmin' => true],
-        //'Profil' => ['url' => '', 'isadmin' => false],
-        'Program Kerja' => ['url' => route('program-kerja'), 'isadmin' => false],
-        'Statistik' => ['url' => route('statistic'), 'isadmin' => false],
-        'Struktur Organisasi' => ['url' => route('struktur-organisasi'), 'isadmin' => false],
-        'Bantuan' => ['url' => '', 'isadmin' => false],
+        'Program Kerja' => ['url' => route('program-kerja'), 'isadmin' => false, 'redirect' => false],
+        'Statistik' => ['url' => route('statistic'), 'isadmin' => false, 'redirect' => false],
+        'Struktur AOC' => ['url' => route('struktur-organisasi'), 'isadmin' => false, 'redirect' => false],
+        'Bantuan' => [
+            'url' => 'https://wa.me/+6282198329493?text=Hallo admin👋, Saya mau tanya ...',
+            'redirect' => true,
+            'isadmin' => false,
+        ],
     ];
     $loginurl = route('login');
 @endphp
@@ -21,10 +23,8 @@
     </aside>
     <nav class="flex justify-center md:justify-end items-center grow gap-8">
         @foreach ($navbar as $key => $data)
-            @if ($data['isadmin'] && (!auth()->user() || !auth()->user()->isAdmin()))
-                @continue
-            @endif
-            <a class="hidden xl:block hover:text-white/75 duration-300 hover:underline"
+            <a {{ $data['redirect'] ? "target='_blank'" : '' }}
+                class="hidden xl:block hover:text-white/75 duration-300 hover:underline"
                 href="{{ $data['url'] }}">{{ $key }}</a>
         @endforeach
         @auth
@@ -54,6 +54,17 @@
                         d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 13 16h-2a3.987 3.987 0 0 0-3.951 3.512A8.948 8.948 0 0 0 12 21Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                 </svg>
             </a>
+            @if (auth()->user()->isAdmin())
+                <a class="hover:text-white/75 duration-300 flex" href="{{ route('dashboard.cabang.index') }}">
+                    <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 13v-2a1 1 0 0 0-1-1h-.757l-.707-1.707.535-.536a1 1 0 0 0 0-1.414l-1.414-1.414a1 1 0 0 0-1.414 0l-.536.535L14 4.757V4a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v.757l-1.707.707-.536-.535a1 1 0 0 0-1.414 0L4.929 6.343a1 1 0 0 0 0 1.414l.536.536L4.757 10H4a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h.757l.707 1.707-.535.536a1 1 0 0 0 0 1.414l1.414 1.414a1 1 0 0 0 1.414 0l.536-.535 1.707.707V20a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-.757l1.707-.708.536.536a1 1 0 0 0 1.414 0l1.414-1.414a1 1 0 0 0 0-1.414l-.535-.536.707-1.707H20a1 1 0 0 0 1-1Z" />
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                    </svg>
+                </a>
+            @endif
         @endauth
         @guest
             <a class="bg-white hover:bg-white/75 duration-300 text-accent-1 px-8 py-1 rounded-full"

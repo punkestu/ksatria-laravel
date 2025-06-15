@@ -11,7 +11,13 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 Route::get('/struktur-organisasi', function () {
-    return view('struktur-organisasi');
+    $cabangs = Cabang::all()->map(function ($cabang) {
+        return [
+            'id' => $cabang->id,
+            'data' => $cabang
+        ];
+    });
+    return view('struktur-organisasi', compact('cabangs'));
 })->name('struktur-organisasi');
 Route::get('/program-kerja', function () {
     return view('program-kerja');

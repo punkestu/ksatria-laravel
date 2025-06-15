@@ -241,10 +241,10 @@ class ProgramkerjaController extends Controller
             'description' => 'required|string',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
-            'budget' => 'required_if:status,approved|numeric|min:0',
             'picture' => 'nullable|array',
             'picture.*.picture_id' => 'exists:pictures,id',
             'picture.*.url' => 'nullable|string',
+            'keterangan' => 'required_if:status,approved|string',
         ], [
             'program_kerja_id.required' => 'Program kerja harus dipilih.',
             'program_kerja_id.exists' => 'Program kerja yang dipilih tidak valid.',
@@ -258,12 +258,11 @@ class ProgramkerjaController extends Controller
             'end_date.required' => 'Tanggal akhir harus diisi.',
             'end_date.date' => 'Tanggal akhir harus berupa tanggal yang valid.',
             'end_date.after_or_equal' => 'Tanggal akhir harus setelah atau sama dengan tanggal mulai.',
-            'budget.required_if' => 'Anggaran harus diisi jika status program kerja adalah disetujui.',
-            'budget.numeric' => 'Anggaran harus berupa angka.',
-            'budget.min' => 'Anggaran tidak boleh kurang dari 0.',
             'picture.array' => 'Gambar harus berupa array.',
             'picture.*.picture_id.exists' => 'Gambar yang dipilih tidak valid.',
             'picture.*.url.string' => 'URL gambar harus berupa teks.',
+            'keterangan.required_if' => 'Keterangan harus diisi jika status program kerja adalah disetujui.',
+            'keterangan.string' => 'Keterangan harus berupa teks.',
         ]);
 
         if ($validation->fails()) {
@@ -282,12 +281,17 @@ class ProgramkerjaController extends Controller
             $pengajuanproker->start_date = $request->input('start_date');
             $pengajuanproker->end_date = $request->input('end_date');
         }
-        $pengajuanproker->budget = $request->input('budget', 0);
+        if ($pengajuanproker->status == 'approved') {
+            $pengajuanproker->keterangan = $request->input('keterangan');
+            $pengajuanproker->pictures()->sync(array_map(function ($picture) {
+                return $picture["picture_id"];
+            }, $request->input('picture', [])));
+            // set current date to tgl_selesai
+            $pengajuanproker->tgl_selesai = now();
+            $pengajuanproker->status = 'completed';
+        }
         $pengajuanproker->save();
-        $pengajuanproker->pictures()->sync(array_map(function ($picture) {
-            return $picture["picture_id"];
-        }, $request->input('picture', [])));
-
+        
         $notified = User::where('role', 'admin')->orWhere('id', Auth::id())->get();
         ProkerStatus::notify($notified, Auth::user(), $pengajuanproker->id, "diubah");
 

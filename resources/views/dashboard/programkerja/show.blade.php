@@ -1,6 +1,7 @@
 @extends('layouts.dashboard')
 @section('dashboard-content')
-    <a href="{{ route('dashboard.programkerja.index') }}">Kembali</a>
+    <a class="bg-red-500 text-white px-4 py-1 rounded mb-4 inline-block"
+        href="{{ route('dashboard.programkerja.index') }}">Kembali</a>
     <div>
         <div class="mb-4">
             <label for="name" class="block text-sm font-medium text-gray-700">Nama Program Kerja</label>

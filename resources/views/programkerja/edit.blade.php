@@ -71,19 +71,10 @@
             </div>
             @if ($pengajuanproker->status === 'approved')
                 <hr class="my-2">
-                {{-- budger --}}
-                <div class="mb-4">
-                    <label for="budget" class="block text-sm font-medium text-gray-700">Anggaran</label>
-                    <input type="number" id="budget" name="budget" required
-                        class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                        value="{{ old('budget') ?? $pengajuanproker->budget }}">
-                    @if ($errors->has('budget'))
-                        <p class="text-red-500 text-xs mt-1">{{ $errors->first('budget') }}</p>
-                    @endif
-                </div>
                 {{-- pictures --}}
                 <div class="mb-4">
-                    <label for="pictures" class="block text-sm font-medium text-gray-700">Gambar (Bukti kegiatan, Struk, dll)</label>
+                    <label for="pictures" class="block text-sm font-medium text-gray-700">Gambar (Bukti kegiatan, Struk,
+                        dll)</label>
                     <div class="flex flex-wrap gap-2 mt-1">
                         @foreach (old('picture') ?? $pengajuanproker->pictures as $picture)
                             <div class="w-32 aspect-square relative">
@@ -107,8 +98,8 @@
                             class="bg-gray-500/30 hover:bg-gray-500/100 duration-300 w-32 aspect-square flex justify-center items-center">
                             <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="M5 12h14m-7 7V5" />
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 12h14m-7 7V5" />
                             </svg>
                         </button>
                     </div>
@@ -116,10 +107,19 @@
                         <p class="text-red-500 text-xs mt-1">{{ $errors->first('pictures') }}</p>
                     @endif
                 </div>
+                {{-- budger --}}
+                <div class="mb-4">
+                    <label for="keterangan" class="block text-sm font-medium text-gray-700">Keterangan</label>
+                    <textarea id="keterangan" name="keterangan" required
+                        class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm read-only:bg-gray-50">{{ old('keterangan') ?? $pengajuanproker->keterangan }}</textarea>
+                    @if ($errors->has('keterangan'))
+                        <p class="text-red-500 text-xs mt-1">{{ $errors->first('keterangan') }}</p>
+                    @endif
+                </div>
             @endif
             <button type="submit"
                 class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 active:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                Simpan
+                {{ $pengajuanproker->status === 'approved' ? 'Selesaikan' : 'Simpan' }}
             </button>
         </form>
     </main>

@@ -15,7 +15,8 @@ class ProgramKerjaItem extends Model
         'status',
         'start_date',
         'end_date',
-        'budget',
+        'keterangan',
+        'tgl_selesai',
         'cabang_id',
         'user_id',
     ];
