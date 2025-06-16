@@ -1,7 +1,7 @@
 @extends('layouts.base')
 @section('content')
     <main class="min-h-[calc(100vh-16rem)] flex flex-col items-center justify-center gap-8 p-8">
-        <img class="absolute -z-10 opacity-25" src="/images/champion-logo.png" alt="airnav">
+        <img class="absolute -z-30 opacity-25 h-full" src="/images/champion-logo.png" alt="airnav">
         <h2 class="text-center font-black text-5xl text-accent-1" data-aos="fade-down">
             Struktur AOC <br> Ksatria
         </h2>
