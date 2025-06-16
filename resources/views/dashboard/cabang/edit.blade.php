@@ -14,12 +14,30 @@
             @endif
         </div>
         <div class="mb-4">
+            <label for="rolemodel" class="block text-sm font-medium text-gray-700">Role Model</label>
+            <input type="text" id="rolemodel" name="rolemodel"
+                class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                value="{{ old('rolemodel') ?? $cabang->rolemodel }}">
+            @if ($errors->has('rolemodel'))
+                <p class="text-red-500 text-xs mt-1">{{ $errors->first('rolemodel') }}</p>
+            @endif
+        </div>
+        <div class="mb-4">
             <label for="kaisar" class="block text-sm font-medium text-gray-700">Kaisar</label>
-            <input type="text" id="kaisar" name="kaisar" required
+            <input type="text" id="kaisar" name="kaisar"
                 class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 value="{{ old('kaisar') ?? $cabang->kaisar }}">
             @if ($errors->has('kaisar'))
                 <p class="text-red-500 text-xs mt-1">{{ $errors->first('kaisar') }}</p>
+            @endif
+        </div>
+        <div class="mb-4">
+            <label for="ksatria" class="block text-sm font-medium text-gray-700">Ksatria</label>
+            <input type="text" id="ksatria" name="ksatria"
+                class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                value="{{ old('ksatria') ?? $cabang->ksatria }}">
+            @if ($errors->has('ksatria'))
+                <p class="text-red-500 text-xs mt-1">{{ $errors->first('ksatria') }}</p>
             @endif
         </div>
         <button type="submit"

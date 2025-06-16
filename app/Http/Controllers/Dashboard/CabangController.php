@@ -32,14 +32,19 @@ class CabangController extends Controller
     {
         $validation = validator($request->all(), [
             'name' => 'required|string|max:255',
-            'kaisar' => 'required|string|max:255',
+            'rolemodel' => 'nullable|string|max:255',
+            'kaisar' => 'nullable|string|max:255',
+            'ksatria' => 'nullable|string|max:255',
         ], [
             'name.required' => 'Nama cabang harus diisi.',
             'name.string' => 'Nama cabang harus berupa teks.',
             'name.max' => 'Nama cabang tidak boleh lebih dari 255 karakter.',
-            'kaisar.required' => 'Nama kaisar harus diisi.',
+            'rolemodel.string' => 'Nama role model harus berupa teks.',
+            'rolemodel.max' => 'Nama role model tidak boleh lebih dari 255 karakter.',
             'kaisar.string' => 'Nama kaisar harus berupa teks.',
             'kaisar.max' => 'Nama kaisar tidak boleh lebih dari 255 karakter.',
+            'ksatria.string' => 'Nama ksatria harus berupa teks.',
+            'ksatria.max' => 'Nama ksatria tidak boleh lebih dari 255 karakter.',
         ]);
 
         if ($validation->fails()) {
@@ -54,7 +59,9 @@ class CabangController extends Controller
 
         Cabang::create([
             'name' => $request->name,
-            'kaisar' => $request->kaisar,
+            'ksatria' => $request->ksatria ?? '',
+            'kaisar' => $request->kaisar ?? '',
+            'rolemodel' => $request->rolemodel ?? '',
         ]);
 
         return redirect()->route('dashboard.cabang.index')
@@ -87,14 +94,19 @@ class CabangController extends Controller
     {
         $validation = validator($request->all(), [
             'name' => 'required|string|max:255',
-            'kaisar' => 'required|string|max:255',
+            'rolemodel' => 'nullable|string|max:255',
+            'kaisar' => 'nullable|string|max:255',
+            'ksatria' => 'nullable|string|max:255',
         ], [
             'name.required' => 'Nama cabang harus diisi.',
             'name.string' => 'Nama cabang harus berupa teks.',
             'name.max' => 'Nama cabang tidak boleh lebih dari 255 karakter.',
-            'kaisar.required' => 'Nama kaisar harus diisi.',
+            'rolemodel.string' => 'Nama role model harus berupa teks.',
+            'rolemodel.max' => 'Nama role model tidak boleh lebih dari 255 karakter.',
             'kaisar.string' => 'Nama kaisar harus berupa teks.',
             'kaisar.max' => 'Nama kaisar tidak boleh lebih dari 255 karakter.',
+            'ksatria.string' => 'Nama ksatria harus berupa teks.',
+            'ksatria.max' => 'Nama ksatria tidak boleh lebih dari 255 karakter.',
         ]);
 
         if ($validation->fails()) {
@@ -109,7 +121,9 @@ class CabangController extends Controller
 
         $cabang->update([
             'name' => $request->name,
-            'kaisar' => $request->kaisar,
+            'rolemodel' => $request->rolemodel ?? '',
+            'kaisar' => $request->kaisar ?? '',
+            'ksatria' => $request->ksatria ?? '',
         ]);
 
         return redirect()->route('dashboard.cabang.index')

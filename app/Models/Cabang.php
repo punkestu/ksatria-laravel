@@ -9,7 +9,9 @@ class Cabang extends Model
 {
     protected $fillable = [
         'name',
+        'rolemodel',
         'kaisar',
+        'ksatria',
     ];
 
     public function programKerjaItems()
