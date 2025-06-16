@@ -25,31 +25,30 @@
                 <main class="modal__content" id="modal-struktur-content">
                     <div class="flex flex-col items-center">
                         <p class="w-full text-center bg-blue-500 text-white px-4 py-1 rounded-lg">Role Model</p>
-                        <p id="rolemodel" class="w-full text-center bg-white border mt-1 px-4 py-1 rounded-lg">Para General Manager</p>
-                        <svg class="w-6 h-6 text-gray-800 my-2" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                            viewBox="0 0 24 24">
+                        <p id="rolemodel" class="w-full text-center bg-white border mt-1 px-4 py-1 rounded-lg">Para General
+                            Manager</p>
+                        <svg class="w-6 h-6 text-gray-800 my-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 19V5m0 14-4-4m4 4 4-4" />
                         </svg>
                         <p class="w-full text-center bg-blue-500 text-white px-4 py-1 rounded-lg">Change Leader (Kaisar)</p>
                         <p id="kaisar" class="w-full text-center bg-white border mt-1 px-4 py-1 rounded-lg"></p>
-                        <svg class="w-6 h-6 text-gray-800 my-2" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                            viewBox="0 0 24 24">
+                        <svg class="w-6 h-6 text-gray-800 my-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 19V5m0 14-4-4m4 4 4-4" />
                         </svg>
                         <p class="w-full text-center bg-blue-500 text-white px-4 py-1 rounded-lg">Change Agent (Ksatria)</p>
-                        <p class="w-full text-center bg-white border mt-1 px-4 py-1 rounded-lg">Para Ksatria</p>
-                        <svg class="w-6 h-6 text-gray-800 my-2" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                            viewBox="0 0 24 24">
+                        <p id="ksatria" class="w-full text-center bg-white border mt-1 px-4 py-1 rounded-lg">Para Ksatria</p>
+                        <svg class="w-6 h-6 text-gray-800 my-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 19V5m0 14-4-4m4 4 4-4" />
                         </svg>
                         <p class="w-full text-center bg-blue-500 text-white px-4 py-1 rounded-lg">Change Target</p>
-                        <p class="w-full text-center bg-white border mt-1 px-4 py-1 rounded-lg">Seluruh Karyawan di Lokasi</p>
+                        <p class="w-full text-center bg-white border mt-1 px-4 py-1 rounded-lg">Seluruh Karyawan di Lokasi
+                        </p>
                     </div>
                 </main>
             </div>
@@ -60,13 +59,18 @@
     <script>
         function openModal({
             id,
-            kaisar
+            rolemodel,
+            kaisar,
+            ksatria
         }) {
             if (id == 0) {
                 return;
             }
+            document.getElementById('rolemodel').innerHTML = !rolemodel || rolemodel == "" ? "Para General Manager" :
+                rolemodel;
             document.getElementById('kaisar').innerHTML = !kaisar || kaisar == "" ? "Manager Administrasi & Keuangan" :
                 kaisar;
+            document.getElementById('ksatria').innerHTML = !ksatria || ksatria == "" ? "Para Ksatria" : ksatria;
             MicroModal.show("modal-struktur");
         }
 
