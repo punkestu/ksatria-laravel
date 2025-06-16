@@ -31,6 +31,6 @@
         </div>
     </aside>
     <div class="col-span-1 md:col-span-2 lg:col-span-1 z-0 self-center flex justify-center items-center">
-        <img class="w-2/3" src="/images/champion-logo.svg" alt="champion">
+        <img class="w-2/3" src="/images/champion-logo-long.png" alt="champion">
     </div>
 </footer>

@@ -19,7 +19,7 @@
         <img class="h-10" src="/images/akhlak.png" alt="akhlak">
         <img class="h-10" src="/images/airnav.png" alt="Airnav">
         <a href="/" class="flex h-8">
-            <img src="/images/champion-logo.svg" alt="champion">
+            <img src="/images/champion-logo-long.png" alt="champion">
         </a>
     </aside>
     <nav class="flex justify-center md:justify-end items-center grow gap-8">
