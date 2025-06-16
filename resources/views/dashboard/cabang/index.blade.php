@@ -9,8 +9,10 @@
                 <tr class="border-b">
                     <th class="p-1 w-3">No</th>
                     <th class="p-1 w-3">ID</th>
-                    <th class="text-left p-1 w-1/3">Nama Cabang</th>
-                    <th class="text-left p-1 w-1/3">Kaisar</th>
+                    <th class="text-left p-1 w-1/4">Nama Cabang</th>
+                    <th class="text-left p-1 w-1/4">Role Model</th>
+                    <th class="text-left p-1 w-1/4">Kaisar</th>
+                    <th class="text-left p-1 w-1/4">Ksatria</th>
                     <th class="p-1">Aksi</th>
                 </tr>
             </thead>
@@ -20,7 +22,9 @@
                         <td class="px-2 py-1">{{ $loop->iteration }}</td>
                         <td class="px-2 py-1">{{ $item->id }}</td>
                         <td class="px-2 py-1">{{ $item->name }}</td>
+                        <td class="px-2 py-1">{{ $item->rolemodel }}</td>
                         <td class="px-2 py-1">{{ $item->kaisar }}</td>
+                        <td class="px-2 py-1">{{ $item->ksatria }}</td>
                         <td class="flex justify-center gap-2 px-2 py-1">
                             <a class="bg-blue-500 text-white px-2 py-1 rounded-md"
                                 href="{{ route('dashboard.cabang.show', $item->id) }}">Lihat</a>
