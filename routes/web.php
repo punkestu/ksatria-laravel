@@ -85,6 +85,9 @@ Route::resource('user', \App\Http\Controllers\Dashboard\UserController::class)
 Route::resource('programkerja', \App\Http\Controllers\Dashboard\ProgramkerjaController::class)
     ->middleware(['auth', 'admin'])
     ->names('dashboard.programkerja');
+Route::resource('karyawan', \App\Http\Controllers\Dashboard\KaryawanController::class)
+    ->middleware(['auth', 'admin'])
+    ->names('dashboard.karyawan');
 
 Route::resource('pengajuanproker', \App\Http\Controllers\ProgramkerjaController::class)
     ->middleware(['auth'])
