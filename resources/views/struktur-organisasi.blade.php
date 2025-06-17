@@ -5,9 +5,19 @@
         <h2 class="text-center font-black text-5xl text-accent-1" data-aos="fade-down">
             Struktur AOC <br> Ksatria
         </h2>
-        <section id="struktur" class="max-w-screen overflow-scroll scrollbar-hidden flex flex-wrap justify-center gap-2" data-aos="fade-up">
+        <div class="bg-white w-full border flex items-center rounded-md">
+            <input class="w-full p-2 text-center outline-none border-transparent focus:border-transparent focus:ring-0" type="search" id="search" onkeyup="search(this)">
+            <svg class="w-6 h-6 text-gray-800 m-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                    d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+            </svg>
+        </div>
+        <section id="struktur" class="max-w-screen overflow-scroll scrollbar-hidden flex flex-wrap justify-center gap-2"
+            data-aos="fade-up">
             @foreach ($cabangs as $cabang)
-                <button onclick='setModal(@json($cabang))' class="px-4 py-2 bg-accent-4/75 text-accent-1 font-semibold rounded-md hover:bg-accent-3 duration-300">
+                <button onclick='setModal(@json($cabang))'
+                    class="px-4 py-2 bg-accent-4/75 text-accent-1 font-semibold rounded-md hover:bg-accent-3 duration-300">
                     {{ $cabang->name }}
                 </button>
             @endforeach
@@ -69,6 +79,21 @@
             ksatria.innerText = cabang.ksatria ?? 'Para Change Agent';
 
             MicroModal.show('modal-struktur');
+        }
+
+        function search(el) {
+            const searchValue = el.value.toLowerCase();
+            const struktur = document.getElementById('struktur');
+            const buttons = struktur.querySelectorAll('button');
+
+            buttons.forEach(button => {
+                const buttonText = button.innerText.toLowerCase();
+                if (buttonText.includes(searchValue)) {
+                    button.style.display = 'inline-block';
+                } else {
+                    button.style.display = 'none';
+                }
+            });
         }
     </script>
 @endpush
