@@ -105,105 +105,61 @@ class ProgramKerjaItem extends Model
         return $data;
     }
 
-    public static function getMostApproved($year = null)
+    public static function getPendingThisYear($year)
     {
-        $data = Cache::get('program_kerja_item_getMostApproved_' . $year);
+        $data = Cache::get('program_kerja_item_getPendingThisYear_' . $year);
         if ($data) {
             return $data;
         }
-        $data = ProgramKerjaItem::with(['cabang'])
-            ->selectRaw('cabang_id, COUNT(*) as total')
-            ->when($year, function ($query) use ($year) {
-                return $query->whereYear('start_date', $year);
-            })
-            ->whereIn('status', ['approved', 'completed', 'canceled'])
-            ->groupBy('cabang_id')
-            ->orderBy('total', 'desc')
-            ->get()
-            ->map(function ($item) {
-                return [
-                    'cabang_name' => $item->cabang->name,
-                    'total' => $item->total,
-                ];
-            })
-            ->first();
-        Cache::put('program_kerja_item_getMostApproved_' . $year, $data, 60 * 5);
+        $data = ProgramKerjaItem::where('status', 'pending')
+            ->whereYear('start_date', $year)
+            ->count();
+        Cache::put('program_kerja_item_getPendingThisYear_' . $year, $data, 60 * 5);
         return $data;
     }
 
-    public static function getLongestDuration($year)
+    public static function getApprovedThisYear($year)
     {
-        $data = Cache::get('program_kerja_item_getLongestDuration_' . $year);
+        $data = Cache::get('program_kerja_item_getApprovedThisYear_' . $year);
         if ($data) {
             return $data;
         }
-        $data = ProgramKerjaItem::selectRaw('id, name, cabang_id, MAX(DATEDIFF(end_date, start_date)) as max_duration')
+        $data = ProgramKerjaItem::where('status', 'approved')
+            ->orWhere('status', 'completed')
+            ->orWhere('status', 'canceled')
             ->whereYear('start_date', $year)
-            ->whereIn('status', ['approved', 'completed', 'canceled'])
-            ->groupBy(['id', 'cabang_id', 'name'])
-            ->orderBy('max_duration', 'desc')
-            ->get()
-            ->map(function ($item) {
-                return [
-                    'id' => $item->id,
-                    'name' => $item->name,
-                    'cabang_name' => Cabang::find($item->cabang_id)->name,
-                    'max_duration' => $item->max_duration,
-                ];
-            })
-            ->first();
-        Cache::put('program_kerja_item_getLongestDuration_' . $year, $data, 60 * 5);
+            ->count();
+        Cache::put('program_kerja_item_getApprovedThisYear_' . $year, $data, 60 * 5);
         return $data;
     }
 
-    public static function getMostExpensive($year)
+    public static function getCompletedThisYear($year)
     {
-        $data = Cache::get('program_kerja_item_getMostExpensive_' . $year);
+        $data = Cache::get('program_kerja_item_getCompletedThisYear_' . $year);
         if ($data) {
             return $data;
         }
-        $data = ProgramKerjaItem::selectRaw('id, name, cabang_id, MAX(budget) as max_budget')
+        $data = ProgramKerjaItem::where('status', 'completed')
             ->whereYear('start_date', $year)
-            ->whereIn('status', ['approved', 'completed', 'canceled'])
-            ->groupBy(['id', 'cabang_id', 'name'])
-            ->orderBy('max_budget', 'desc')
-            ->get()
-            ->map(function ($item) {
-                return [
-                    'id' => $item->id,
-                    'name' => $item->name,
-                    'cabang_name' => Cabang::find($item->cabang_id)->name,
-                    'max_budget' => $item->max_budget,
-                ];
-            })
-            ->first();
-        Cache::put('program_kerja_item_getMostExpensive_' . $year, $data, 60 * 5);
+            ->count();
+        Cache::put('program_kerja_item_getCompletedThisYear_' . $year, $data, 60 * 5);
         return $data;
     }
 
-    public static function getCheapest($year)
+    public static function getRatingAvg($year)
     {
-        $data = Cache::get('program_kerja_item_getCheapest_' . $year);
+        $data = Cache::get('program_kerja_item_getRatingAvg_' . $year);
         if ($data) {
             return $data;
         }
-        $data = ProgramKerjaItem::selectRaw('id, name, cabang_id, MIN(budget) as min_budget')
-            ->whereYear('start_date', $year)
-            ->where('budget', '>', 0)
-            ->whereIn('status', ['approved', 'completed', 'canceled'])
-            ->groupBy(['id', 'cabang_id', 'name'])
-            ->orderBy('min_budget', 'asc')
-            ->get()
-            ->map(function ($item) {
-                return [
-                    'id' => $item->id,
-                    'name' => $item->name,
-                    'cabang_name' => Cabang::find($item->cabang_id)->name,
-                    'min_budget' => $item->min_budget,
-                ];
-            })
-            ->first();
-        Cache::put('program_kerja_item_getCheapest_' . $year, $data, 60 * 5);
+        $data = ProgramKerjaItem::with("cabang")->select("cabang_id", DB::raw("AVG(rating) as avg_rating"))->where("status", "completed")->where(DB::raw("YEAR(start_date)"), $year)->groupBy("cabang_id")->orderBy("avg_rating", "desc")->get()->map(function ($item) {
+            return [
+                'cabang_id' => $item->cabang_id,
+                'cabang_name' => $item->cabang->name,
+                'avg_rating' => round($item->avg_rating, 2),
+            ];
+        });
+        Cache::put('program_kerja_item_getRatingAvg_' . $year, $data, 60 * 5);
         return $data;
     }
 }

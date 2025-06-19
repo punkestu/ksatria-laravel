@@ -42,6 +42,71 @@ export function multiLineChart(title, x, ys, labels) {
         title: {
             text: title,
             align: "left",
-        }
+        },
+    };
+}
+
+export function pieChart(title, labels, values) {
+    return {
+        series: values,
+        chart: {
+            width: 380,
+            type: "pie",
+        },
+        labels: labels,
+        responsive: [
+            {
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 200,
+                    },
+                    legend: {
+                        position: "bottom",
+                    },
+                },
+            },
+        ],
+        title: {
+            text: title,
+            align: "left",
+        },
+        dataLabels: {
+            formatter: function (_, opts) {
+                return opts.w.config.series[opts.seriesIndex];
+            },
+        },
+    };
+}
+
+export function barChart(title, labels, values) {
+    return {
+        series: [
+            {
+                name: "Rata-rata rating",
+                data: values,
+            },
+        ],
+        chart: {
+            type: "bar",
+            height: 350,
+        },
+        plotOptions: {
+            bar: {
+                borderRadius: 4,
+                borderRadiusApplication: "end",
+                horizontal: true,
+            },
+        },
+        title: {
+            text: title,
+            align: "left",
+        },
+        dataLabels: {
+            enabled: false
+        },
+        xaxis: {
+            categories: labels,
+        },
     };
 }

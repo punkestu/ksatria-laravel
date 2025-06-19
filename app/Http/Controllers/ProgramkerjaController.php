@@ -289,6 +289,21 @@ class ProgramkerjaController extends Controller
             // set current date to tgl_selesai
             $pengajuanproker->tgl_selesai = now();
             $pengajuanproker->status = 'completed';
+
+            // set rating by tgl_selesai compared with start_date and end_date
+            $startDate = $pengajuanproker->start_date ? new \DateTime($pengajuanproker->start_date) : new \DateTime();
+            $endDate = $pengajuanproker->end_date ? new \DateTime($pengajuanproker->end_date) : new \DateTime();
+            $tglSelesai = new \DateTime($pengajuanproker->tgl_selesai);
+            $totalDays = $endDate->diff($startDate)->days;
+            $daysCompleted = $tglSelesai->diff($startDate)->days;
+            
+            // if days completed less than 50% of total days, set rating to 10
+            if ($daysCompleted <= ($totalDays * 0.5)) {
+                $pengajuanproker->rating = 10;
+            } else {
+                $halfTotalDays = $totalDays / 2;
+                $pengajuanproker->rating = 10 - (5 * (($daysCompleted - $halfTotalDays) / $halfTotalDays));
+            }
         }
         $pengajuanproker->save();
         

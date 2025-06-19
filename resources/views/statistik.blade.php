@@ -2,71 +2,28 @@
 @section('content')
     <main class="min-h-screen p-8 flex flex-col gap-4 bg-gray-50">
         <h2 class="font-semibold text-2xl">Statistik</h2>
-        @if (auth()->user()->isAdmin())
-            <section id="rank" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
-                @if ($mostApprovedAlltime)
-                    <div class="shadow p-4 bg-white rounded-lg">
-                        <h3 class="text-center">Program Terbanyak Sepanjang masa</h3>
-                        <p class="font-semibold text-center">{{ $mostApprovedAlltime['cabang_name'] }}</p>
-                        <p class="font-bold text-2xl text-center">{{ $mostApprovedAlltime['total'] }} Program Kerja</p>
-                    </div>
-                @endif
-                @if ($mostApproved)
-                    <div class="shadow p-4 bg-white rounded-lg">
-                        <h3 class="text-center">Program Terbanyak Tahun {{ $thisyear }}</h3>
-                        <p class="font-semibold text-center">{{ $mostApproved['cabang_name'] }}</p>
-                        <p class="font-bold text-2xl text-center">{{ $mostApproved['total'] }} Program Kerja</p>
-                    </div>
-                @endif
-                @if ($longest)
-                    <div class="shadow p-4 bg-white rounded-lg">
-                        <h3 class="text-center">Program Terlama Tahun {{ $thisyear }}</h3>
-                        <p class="font-semibold text-center">{{ $longest['cabang_name'] }} - {{ $longest['name'] }}
-                            ({{ $longest['id'] }})</p>
-                        <p class="font-bold text-2xl text-center">{{ $longest['max_duration'] }} hari</p>
-                    </div>
-                @endif
-                @if ($mostExpensive)
-                    <div class="shadow p-4 bg-white rounded-lg">
-                        <h3 class="text-center">Program Termahal Tahun {{ $thisyear }}</h3>
-                        <p class="font-semibold text-center">{{ $mostExpensive['cabang_name'] }} -
-                            {{ $mostExpensive['name'] }} ({{ $mostExpensive['id'] }})
-                        </p>
-                        <p class="font-bold text-2xl text-center">
-                            Rp {{ number_format($mostExpensive['max_budget'], 2, ',', '.') }}</p>
-                    </div>
-                @endif
-                @if ($cheapest)
-                    <div class="shadow p-4 bg-white rounded-lg">
-                        <h3 class="text-center">Program Termurah Tahun {{ $thisyear }}</h3>
-                        <p class="font-semibold text-center">{{ $cheapest['cabang_name'] }} - {{ $cheapest['name'] }}
-                            ({{ $cheapest['id'] }})
-                        </p>
-                        <p class="font-bold text-2xl text-center">Rp
-                            {{ number_format($cheapest['min_budget'], 2, ',', '.') }}
-                        </p>
-                    </div>
-                @endif
-            </section>
-        @endif
+        <section class="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+            <div id="lp-dist" class="shadow p-4 bg-white rounded-lg overflow-x-auto overflow-y-hidden flex justify-center">
+                <div></div>
+            </div>
+            <div id="pk-dist" class="xl:col-span-2 shadow p-4 bg-white rounded-lg overflow-x-auto overflow-y-hidden flex justify-center">
+                <div></div>
+            </div>
+        </section>
         <section id="graphs" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
-            <div id="graph-all" class="md:col-span-2 xl:col-span-3 shadow p-4 bg-white rounded-lg overflow-x-auto overflow-y-hidden">
+            <div id="graph-pending"
+                class="xl:col-span-2 shadow p-4 bg-white rounded-lg overflow-x-auto overflow-y-hidden">
                 <div class="w-screen"></div>
             </div>
-            <div id="graph-pending" class="md:col-span-2 shadow p-4 bg-white rounded-lg overflow-x-auto overflow-y-hidden">
-                <div class="w-screen"></div>
+            <div id="pkprocess-dist" class="shadow p-4 bg-white rounded-lg overflow-x-auto overflow-y-hidden flex justify-center">
+                <div></div>
             </div>
             <div id="graph-approved" class="shadow p-4 bg-white rounded-lg overflow-x-auto overflow-y-hidden">
                 <div class="w-screen md:w-[75vw] xl:w-[50vw]"></div>
             </div>
-            <div id="graph-rejected" class="shadow p-4 bg-white rounded-lg overflow-x-auto overflow-y-hidden">
-                <div class="w-screen md:w-[75vw] xl:w-[50vw]"></div>
-            </div>
-            <div id="graph-completed" class="shadow p-4 bg-white rounded-lg overflow-x-auto overflow-y-hidden">
-                <div class="w-screen md:w-[75vw] xl:w-[50vw]"></div>
-            </div>
-            <div id="graph-canceled" class="shadow p-4 bg-white rounded-lg overflow-x-auto overflow-y-hidden">
-                <div class="w-screen md:w-[75vw] xl:w-[50vw]"></div>
+            <div id="graph-completed"
+                class="xl:col-span-2 shadow p-4 bg-white rounded-lg overflow-x-auto overflow-y-hidden">
+                <div class="w-screen md:w-[75vw]"></div>
             </div>
         </section>
     </main>
@@ -92,30 +49,20 @@
         onloads.push(() => {
             const status = Object.values(@json($status));
             const pending = status.map(s => s.status.pending);
-            const approved = status.map(s => s.status.approved);
-            const rejected = status.map(s => s.status.rejected);
+            const approved = status.map(s => s.status.approved || s.status.completed || s.status.canceled);
             const completed = status.map(s => s.status.completed);
-            const canceled = status.map(s => s.status.canceled);
 
-            const approvedCombined = addstatuses(approved, completed, canceled);
-            const approvedCombinedTotal = addcabangs(...approvedCombined);
+            const approvedTotal = addcabangs(...approved);
             const pendingTotal = addcabangs(...pending);
-            const rejectedTotal = addcabangs(...rejected);
             const completedTotal = addcabangs(...completed);
-            const canceledTotal = addcabangs(...canceled);
-            const all = addstatuses(approvedCombined, canceled, pending);
-            const allTotal = addcabangs(...all);
 
             const cabangNames = [...status.map(s => s.cabang_name), "Semua"];
 
-            var options = Charts.multiLineChart(
-                "Jumlah Program Kerja",
-                {{ json_encode($years) }},
-                [...all, allTotal],
-                cabangNames
-            );
-            var chartall = new ApexCharts(document.querySelector("#graph-all > div"), options);
-            chartall.render();
+            const karyawanCount = @json($karyawanCountPerGender);
+            const cabangRating = @json($ratingCabang);
+
+            const cabangRatingLabels = cabangRating.map(r => r.cabang_name);
+            const cabangRatingData = cabangRating.map(r => r.avg_rating);
 
             var options = Charts.multiLineChart(
                 "Jumlah Program Kerja Diajukan",
@@ -129,20 +76,11 @@
             var options = Charts.multiLineChart(
                 "Jumlah Program Kerja Disetujui",
                 {{ json_encode($years) }},
-                [...approvedCombined, approvedCombinedTotal],
+                [...approved, approvedTotal],
                 cabangNames
             );
             var chartapproved = new ApexCharts(document.querySelector("#graph-approved > div"), options);
             chartapproved.render();
-
-            var options = Charts.multiLineChart(
-                "Jumlah Program Kerja Ditolak",
-                {{ json_encode($years) }},
-                [...rejected, rejectedTotal],
-                cabangNames
-            );
-            var chartrejected = new ApexCharts(document.querySelector("#graph-rejected > div"), options);
-            chartrejected.render();
 
             var options = Charts.multiLineChart(
                 "Jumlah Program Kerja Diselesaikan",
@@ -153,14 +91,38 @@
             var chartcompleted = new ApexCharts(document.querySelector("#graph-completed > div"), options);
             chartcompleted.render();
 
-            var options = Charts.multiLineChart(
-                "Jumlah Program Kerja Dibatalkan",
-                {{ json_encode($years) }},
-                [...canceled, canceledTotal],
-                cabangNames
+            var options = Charts.pieChart(
+                "Jumlah Karyawan per Gender",
+                ["Laki-laki", "Perempuan"],
+                [
+                    karyawanCount["Laki-laki"] || 0,
+                    karyawanCount["Perempuan"] || 0
+                ]
             );
-            var chartcanceled = new ApexCharts(document.querySelector("#graph-canceled > div"), options);
-            chartcanceled.render();
+            var chart = new ApexCharts(document.querySelector("#lp-dist div"), options);
+            chart.render();
+
+            var options = Charts.barChart(
+                "Performa Program Kerja Cabang Tahun ini",
+                cabangRatingLabels,
+                cabangRatingData,
+            );
+            var chart = new ApexCharts(document.querySelector("#pk-dist"), options);
+            chart.render();
+
+            var options = Charts.pieChart(
+                "Jumlah Proses Program Kerja",
+                ["Diajukan", "Disetujui", "Diselesaikan"],
+                [
+                    {{ $pendingThisYear }},
+                    {{ $approvedThisYear }},
+                    {{ $completedThisYear }}
+                ]
+            );
+
+            var chart = new ApexCharts(document.querySelector("#pkprocess-dist div"), options);
+            chart.render();
+
         });
     </script>
 @endpush

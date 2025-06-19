@@ -30,31 +30,7 @@ Route::get('/notification', function (Request $request) {
     }
     return view('notification');
 })->middleware(["auth"])->name('notification');
-Route::get('/statistic', function () {
-    /**
-    @var User $me
-     */
-    $me = Auth::user();
-    $cabang_id = null;
-    if (!$me->isAdmin()) {
-        $cabang_id = $me->cabang_id;
-    }
-    $years = ProgramKerjaItem::getYearStartToEnd($cabang_id);
-    if (!$years) {
-        return redirect()->route('home')->with('alert', [
-            'type' => 'warning',
-            'message' => 'Tidak ada data program kerja yang tersedia untuk statistik.'
-        ]);
-    }
-    $status = ProgramKerjaItem::getByCabang($years, $cabang_id);
-    $thisyear = date('Y');
-    $mostApproved = ProgramKerjaItem::getMostApproved($thisyear);
-    $mostApprovedAlltime = ProgramKerjaItem::getMostApproved();
-    $longest = ProgramKerjaItem::getLongestDuration($thisyear);
-    $mostExpensive = ProgramKerjaItem::getMostExpensive($thisyear);
-    $cheapest = ProgramKerjaItem::getCheapest($thisyear);
-    return view('statistik', compact('years', 'status', 'mostApproved', 'mostApprovedAlltime', 'longest', 'mostExpensive', 'cheapest', 'thisyear'));
-})->middleware(["auth"])->name('statistic');
+Route::get('/statistic', [\App\Http\Controllers\OtherController::class, "statisticPage"])->middleware(["auth"])->name('statistic');
 
 Route::group([
     'prefix' => '/login',
