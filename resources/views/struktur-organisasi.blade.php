@@ -6,9 +6,10 @@
             Struktur AOC <br> Ksatria
         </h2>
         <div class="bg-white w-full border flex items-center rounded-md">
-            <input class="w-full p-2 text-center outline-none border-transparent focus:border-transparent focus:ring-0" type="search" id="search" onkeyup="search(this)">
-            <svg class="w-6 h-6 text-gray-800 m-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <input class="w-full p-2 text-center outline-none border-transparent focus:border-transparent focus:ring-0"
+                type="search" id="search" onkeyup="search(this)">
+            <svg class="w-6 h-6 text-gray-800 m-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
                     d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
             </svg>
@@ -51,8 +52,8 @@
                                 d="M12 19V5m0 14-4-4m4 4 4-4" />
                         </svg>
                         <p class="w-full text-center bg-blue-500 text-white px-4 py-1 rounded-lg">Change Agent (Ksatria)</p>
-                        <p id="ksatria" class="w-full text-center bg-white border mt-1 px-4 py-1 rounded-lg">Para Ksatria
-                        </p>
+                        <div id="ksatria" class="flex gap-2 flex-wrap w-full">
+                        </div>
                         <svg class="w-6 h-6 text-gray-800 my-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                             width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -74,9 +75,11 @@
             const kaisar = document.getElementById('kaisar');
             const ksatria = document.getElementById('ksatria');
 
-            roleModel.innerText = cabang.rolemodel ?? 'Para General Manager';
-            kaisar.innerText = cabang.kaisar ?? 'Para Change Leader';
-            ksatria.innerText = cabang.ksatria ?? 'Para Change Agent';
+            roleModel.innerText = cabang.rolemodel && cabang.ksatria != "" ? cabang.roleModel : 'Para General Manager';
+            kaisar.innerText = cabang.kaisar && cabang.ksatria != "" ? cabang.kaisar : 'Para Change Leader';
+            ksatria.innerHTML = cabang.ksatria && cabang.ksatria != "" ? cabang.ksatria.split("|").map(name =>
+                    `<p class="grow text-center bg-white border mt-1 px-4 py-1 rounded-lg">${name}</p>`).join('') :
+                `<p class="grow text-center bg-white border mt-1 px-4 py-1 rounded-lg">Para Ksatria</p>`;
 
             MicroModal.show('modal-struktur');
         }

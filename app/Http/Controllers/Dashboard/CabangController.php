@@ -34,7 +34,8 @@ class CabangController extends Controller
             'name' => 'required|string|max:255',
             'rolemodel' => 'nullable|string|max:255',
             'kaisar' => 'nullable|string|max:255',
-            'ksatria' => 'nullable|string|max:255',
+            'ksatria' => 'nullable|array',
+            'ksatria.*' => 'nullable|string|max:255',
         ], [
             'name.required' => 'Nama cabang harus diisi.',
             'name.string' => 'Nama cabang harus berupa teks.',
@@ -43,8 +44,9 @@ class CabangController extends Controller
             'rolemodel.max' => 'Nama role model tidak boleh lebih dari 255 karakter.',
             'kaisar.string' => 'Nama kaisar harus berupa teks.',
             'kaisar.max' => 'Nama kaisar tidak boleh lebih dari 255 karakter.',
-            'ksatria.string' => 'Nama ksatria harus berupa teks.',
-            'ksatria.max' => 'Nama ksatria tidak boleh lebih dari 255 karakter.',
+            'ksatria.array' => 'Ksatria harus berupa array.',
+            'ksatria.*.string' => 'Nama ksatria harus berupa teks.',
+            'ksatria.*.max' => 'Nama ksatria tidak boleh lebih dari 255 karakter.',
         ]);
 
         if ($validation->fails()) {
@@ -59,7 +61,7 @@ class CabangController extends Controller
 
         Cabang::create([
             'name' => $request->name,
-            'ksatria' => $request->ksatria ?? '',
+            'ksatria' => $request->ksatria ? implode('|', $request->ksatria) : '',
             'kaisar' => $request->kaisar ?? '',
             'rolemodel' => $request->rolemodel ?? '',
         ]);
@@ -96,7 +98,8 @@ class CabangController extends Controller
             'name' => 'required|string|max:255',
             'rolemodel' => 'nullable|string|max:255',
             'kaisar' => 'nullable|string|max:255',
-            'ksatria' => 'nullable|string|max:255',
+            'ksatria' => 'nullable|array',
+            'ksatria.*' => 'nullable|string|max:255',
         ], [
             'name.required' => 'Nama cabang harus diisi.',
             'name.string' => 'Nama cabang harus berupa teks.',
@@ -105,8 +108,9 @@ class CabangController extends Controller
             'rolemodel.max' => 'Nama role model tidak boleh lebih dari 255 karakter.',
             'kaisar.string' => 'Nama kaisar harus berupa teks.',
             'kaisar.max' => 'Nama kaisar tidak boleh lebih dari 255 karakter.',
-            'ksatria.string' => 'Nama ksatria harus berupa teks.',
-            'ksatria.max' => 'Nama ksatria tidak boleh lebih dari 255 karakter.',
+            'ksatria.array' => 'Ksatria harus berupa array.',
+            'ksatria.*.string' => 'Nama ksatria harus berupa teks.',
+            'ksatria.*.max' => 'Nama ksatria tidak boleh lebih dari 255 karakter.',
         ]);
 
         if ($validation->fails()) {
@@ -123,7 +127,7 @@ class CabangController extends Controller
             'name' => $request->name,
             'rolemodel' => $request->rolemodel ?? '',
             'kaisar' => $request->kaisar ?? '',
-            'ksatria' => $request->ksatria ?? '',
+            'ksatria' => $request->ksatria ? implode('|', $request->ksatria) : '',
         ]);
 
         return redirect()->route('dashboard.cabang.index')
