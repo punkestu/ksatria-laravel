@@ -37,7 +37,7 @@ class KaryawanController extends Controller
             [
                 "name" => "required|string|max:255",
                 "nik" => "required|string|max:255|unique:karyawans,nik",
-                "email" => "required|email|max:255|unique:karyawans,email",
+                "email" => "nullable|email|max:255|unique:karyawans,email",
                 "phone" => "nullable|string|max:32",
                 "gender" => "required|in:Laki-laki,Perempuan",
                 "cabang_id" => "required|exists:cabangs,id",
@@ -108,7 +108,7 @@ class KaryawanController extends Controller
             [
                 "name" => "required|string|max:255",
                 "nik" => "required|string|max:255|unique:karyawans,nik," . $karyawan->id,
-                "email" => "required|email|max:255|unique:karyawans,email," . $karyawan->id,
+                "email" => "nullable|email|max:255|unique:karyawans,email," . $karyawan->id,
                 "phone" => "nullable|string:32",
                 "gender" => "required|in:Laki-laki,Perempuan",
                 "cabang_id" => "required|exists:cabangs,id",
