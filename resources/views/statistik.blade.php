@@ -95,8 +95,8 @@
                 "Jumlah Karyawan per Gender",
                 ["Laki-laki", "Perempuan"],
                 [
-                    karyawanCount["Laki-laki"] || 0,
-                    karyawanCount["Perempuan"] || 0
+                    parseInt(karyawanCount["Laki-laki"]) || 0,
+                    parseInt(karyawanCount["Perempuan"]) || 0
                 ]
             );
             var chart = new ApexCharts(document.querySelector("#lp-dist div"), options);
