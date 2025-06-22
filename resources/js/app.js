@@ -6,12 +6,14 @@ import jQuery from "jquery";
 import ApexCharts from "apexcharts";
 import MicroModal from "micromodal";
 import * as Fullcalendar from "fullcalendar";
+import toastr from 'toastr';
 
 window.AOS = AOS;
 window.ApexCharts = ApexCharts;
 window.Charts = Charts;
 window.MicroModal = MicroModal;
 window.FullCalendar = Fullcalendar;
+window.toastr = toastr;
 
 MicroModal.init();
 

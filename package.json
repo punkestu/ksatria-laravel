@@ -19,6 +19,7 @@
         "apextree": "^1.3.0",
         "fullcalendar": "^6.1.17",
         "jquery": "^3.7.1",
-        "micromodal": "^0.6.1"
+        "micromodal": "^0.6.1",
+        "toastr": "^2.1.4"
     }
 }
