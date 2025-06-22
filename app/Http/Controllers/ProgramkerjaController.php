@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProgramKerjaItemExport;
+use App\Imports\ProgramKerjaItemImport;
 use App\Models\ProgramKerja;
 use App\Models\ProgramKerjaItem;
 use App\Models\User;
@@ -11,6 +13,10 @@ use App\Notifications\ProkerStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Validators\ValidationException;
+use Spipu\Html2Pdf\Html2Pdf;
 
 class ProgramkerjaController extends Controller
 {
@@ -416,5 +422,66 @@ class ProgramkerjaController extends Controller
             'type' => 'success',
             'message' => 'Program kerja berhasil dibatalkan.'
         ]);
+    }
+
+    public function exportpdf(ProgramKerjaItem $pengajuanproker)
+    {
+        $view = view('programkerja.export', compact('pengajuanproker'));
+        $html2pdf = new Html2Pdf();
+        $html2pdf->writeHTML($view->render());
+        $filename = 'program_kerja_' . $pengajuanproker->id . '_' . now()->format('Ymd_His') . '.pdf';
+        $html2pdf->output($filename, 'D');
+    }
+
+    public function export(Request $request)
+    {
+        $programkerjas = ProgramKerja::all();
+        if ($programkerjas->isEmpty()) {
+            return redirect()->route('program-kerja')->with('alert', [
+                'type' => 'warning',
+                'message' => 'Program kerja belum bisa diakses. Hubungi Administrator.'
+            ]);
+        }
+
+        return Excel::download(
+            new ProgramKerjaItemExport,
+            'program_kerja_items_' . now()->format('Ymd_His') . '.xlsx'
+        );
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'import-file' => 'required|file|mimes:xlsx,csv,xls',
+        ], [
+            'import-file.required' => 'File harus diunggah.',
+            'import-file.file' => 'File harus berupa file.',
+            'import-file.mimes' => 'File harus berupa file dengan format xlsx, csv, atau xls.',
+        ]);
+
+        try {
+
+            $import = new ProgramKerjaItemImport();
+            Excel::import($import, $request->file('import-file'));
+
+            return redirect()->back()->with('alert', [
+                'type' => 'success',
+                'message' => 'Data program kerja berhasil diimpor.'
+            ]);
+        } catch (ValidationException $e) {
+            $failures = $e->failures();
+            return redirect()->back()->with('alerts', [
+                [
+                    'type' => 'error',
+                    'message' => 'Gagal mengimpor data program kerja. Periksa kembali format file yang diunggah.'
+                ],
+                ... array_map(function ($failure) {
+                    return [
+                        'type' => 'error',
+                        'message' => "Baris {$failure->row()}: {$failure->errors()[0]}"
+                    ];
+                }, $failures)
+            ])->withErrors($failures);
+        }
     }
 }

@@ -59,3 +59,15 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Import Rule
+<table border=1>
+    <tr>
+        <td>program kerja</td>
+        <td>nama</td>
+        <td>deskripsi</td>
+        <td>status</td>
+        <td>tanggal mulai</td>
+        <td>tanggal selesai</td>
+    </tr>
+</table>

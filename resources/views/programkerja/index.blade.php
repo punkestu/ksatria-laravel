@@ -1,12 +1,45 @@
 @extends('layouts.base')
 @section('content')
+    <div class="modal micromodal-slide" id="modal-import" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+            <div class="modal__container w-[90vw] md:w-[50vw]" role="dialog" aria-modal="true"
+                aria-labelledby="modal-import-title">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="modal-import-title">
+                        Import Data
+                    </h2>
+                    <button class="modal__close cursor-pointer" aria-label="Close modal" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="modal-import-content">
+                    <form method="POST" action="{{ route('pengajuanproker.import') }}" enctype="multipart/form-data"
+                        class="flex flex-col items-center gap-2">
+                        @csrf
+                        <div class="relative flex justify-center items-center h-48 w-full bg-slate-100 rounded-md">
+                            <label class="text-center z-0" for="import-file" id="import-file-label">Silahkan pilih / drop file yang ingin diimport</label>
+                            <input class="opacity-0 z-10 w-full h-full absolute left-0 top-0 border" type="file" name="import-file" id="import-file" title="" accept=".xlsx" onchange="setImportFileLabel(this)">
+                        </div>
+                        <div class="flex justify-between w-full">
+                            <button class="bg-red-500 text-white px-4 py-1 rounded hover:bg-accent-5 cursor-pointer" type="button" onclick="clearImportFile()">Clear</button>
+                            <button class="bg-accent-3 text-white px-4 py-1 rounded hover:bg-accent-5 cursor-pointer" type="submit">Upload</button>
+                        </div>
+                    </form>
+                </main>
+            </div>
+        </div>
+    </div>
     <main class="min-h-screen p-8 bg-gray-50">
         <section class="flex justify-between">
             <h2 class="font-semibold text-2xl">Program Kerja</h2>
-            @if (!auth()->user()->isAdmin())
-                <a class="bg-accent-4 text-white px-4 py-1 rounded hover:bg-accent-5"
-                    href="{{ route('pengajuanproker.create', ['tab' => $programkerja->name]) }}">Tambah</a>
-            @endif
+            <div class="flex gap-2">
+                <a class="bg-accent-3 text-white px-4 py-1 rounded hover:bg-accent-5"
+                    href="{{ route('pengajuanproker.export') }}">Export</a>
+                @if (!auth()->user()->isAdmin())
+                    <button class="bg-accent-3 text-white px-4 py-1 rounded hover:bg-accent-5 cursor-pointer"
+                        onclick="MicroModal.show('modal-import');">Import</button>
+                    <a class="bg-accent-4 text-white px-4 py-1 rounded hover:bg-accent-5"
+                        href="{{ route('pengajuanproker.create', ['tab' => $programkerja->name]) }}">Tambah</a>
+                @endif
+            </div>
         </section>
         <section id="head" class="pt-2 overflow-x-scroll scrollbar-hidden">
             <nav id="tabs" class="flex gap-4">
@@ -81,8 +114,8 @@
                                     </td>
                                     <td class="px-2
                                             py-1">
-                                            {{ $item->start_date ? $item->start_date : 'N/A' }} -
-                                            {{ $item->end_date ? $item->end_date : 'N/A' }}
+                                        {{ $item->start_date ? $item->start_date : 'N/A' }} -
+                                        {{ $item->end_date ? $item->end_date : 'N/A' }}
                                     </td>
                                     <td class="px-2 py-1">
                                         {{ $item->tgl_selesai ? $item->tgl_selesai : 'N/A' }}
@@ -94,6 +127,8 @@
                                     <td class="px-2 py-2">
                                         <div class="flex justify-center flex-wrap gap-2">
                                             <a class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+                                                href="{{ route('pengajuanproker.exportpdf', $item->id) }}">Export</a>
+                                            <a class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
                                                 href="{{ route('pengajuanproker.show', $item->id) }}">Lihat</a>
                                             @if (auth()->user()->isAdmin())
                                                 @if ($item->status == 'pending')
@@ -103,7 +138,8 @@
                                                         method="post" style="display:inline;">
                                                         @csrf
                                                         @method('PATCH')
-                                                        <button class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 cursor-pointer"
+                                                        <button
+                                                            class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 cursor-pointer"
                                                             type="submit">Setujui</button>
                                                     </form>
                                                     <form
@@ -112,7 +148,8 @@
                                                         method="post" style="display:inline;">
                                                         @csrf
                                                         @method('PATCH')
-                                                        <button class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 cursor-pointer"
+                                                        <button
+                                                            class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 cursor-pointer"
                                                             type="submit">Tolak</button>
                                                     </form>
                                                 @endif
@@ -163,6 +200,27 @@
 @endsection
 @push('scripts')
     <script>
+        function setImportFileLabel(input) {
+            const label = document.getElementById('import-file-label');
+            if (input.files && input.files[0]) {
+                label.textContent = input.files[0].name;
+                // if not .xlsx file, show error and reset input
+                if (!input.files[0].name.endsWith('.xlsx')) {
+                    alert('File yang diupload harus berformat .xlsx');
+                    input.value = '';
+                    label.textContent = 'Silahkan pilih / drop file yang ingin diimport';
+                }
+            } else {
+                label.textContent = 'Silahkan pilih / drop file yang ingin diimport';
+            }
+        }
+
+        function clearImportFile() {
+            const input = document.getElementById('import-file');
+            input.value = '';
+            setImportFileLabel(input);
+        }
+
         function otherIntercept(msg) {
             return confirm(msg);
         }

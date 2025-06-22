@@ -65,6 +65,18 @@ Route::resource('karyawan', \App\Http\Controllers\Dashboard\KaryawanController::
     ->middleware(['auth', 'admin'])
     ->names('dashboard.karyawan');
 
+Route::group([
+    'prefix' => '/pengajuanproker',
+    'middleware' => ['auth']
+], function () {
+    Route::get('/pengajuanproker/export', [\App\Http\Controllers\ProgramkerjaController::class, 'export'])
+        ->name('pengajuanproker.export');
+    Route::get('/pengajuanproker/{pengajuanproker}/export', [\App\Http\Controllers\ProgramkerjaController::class, 'exportpdf'])
+        ->name('pengajuanproker.exportpdf');
+
+    Route::post('/pengajuanproker/import', [\App\Http\Controllers\ProgramkerjaController::class, 'import'])
+        ->name('pengajuanproker.import');
+});
 Route::resource('pengajuanproker', \App\Http\Controllers\ProgramkerjaController::class)
     ->middleware(['auth'])
     ->names('pengajuanproker');

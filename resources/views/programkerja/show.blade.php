@@ -25,6 +25,8 @@
                     </form>
                 @endif
             @else
+                <a class="bg-blue-500 text-white px-4 py-1 rounded mb-4 inline-block cursor-pointer"
+                    href="{{ route('pengajuanproker.exportpdf', $pengajuanproker->id) }}">Export</a>
                 @if ($pengajuanproker->status == 'pending' || $pengajuanproker->status == 'approved')
                     <a class="bg-yellow-500 text-white px-4 py-1 rounded mb-4 inline-block cursor-pointer"
                         href="{{ route('pengajuanproker.edit', $pengajuanproker->id) }}">Edit</a>
@@ -72,6 +74,12 @@
                     @readonly(true)>
                     <option>{{ $programkerja->name }}</option>
                 </select>
+            </div>
+            <div class="mb-4">
+                <label for="cabang" class="block text-sm font-medium text-gray-700">Cabang</label>
+                <input type="text" id="cabang" name="cabang" required
+                    class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    value="{{ $pengajuanproker->cabang->name }}" readonly>
             </div>
             <div class="mb-4">
                 <label for="name" class="block text-sm font-medium text-gray-700">Nama</label>
