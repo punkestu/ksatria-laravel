@@ -7,29 +7,27 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ProkerStatus extends Notification
+class AgendaNotification extends Notification
 {
     use Queueable;
 
-    protected $programKerjaItem;
+    protected $agenda;
     protected $actor;
-    protected $status;
 
-    public static function notify($users, $actor, $programKerjaItem, $status)
+    public static function notify($users, $actor, $agenda)
     {
         foreach ($users as $user) {
-            $user->notify(new self($actor, $programKerjaItem, $status));
+            $user->notify(new self($actor, $agenda));
         }
     }
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($actor, $programKerjaItem, $status)
+    public function __construct($actor, $agenda)
     {
         $this->actor = $actor;
-        $this->programKerjaItem = $programKerjaItem;
-        $this->status = $status;
+        $this->agenda = $agenda;
     }
 
     /**
@@ -61,13 +59,12 @@ class ProkerStatus extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            "type" => "Program Kerja",
-            "message" => "Pengajuan Program Kerja {$this->programKerjaItem->name} cabang {$this->programKerjaItem->cabang->name} telah {$this->status}.",
-            "redirect_url" => route('pengajuanproker.show', $this->programKerjaItem->id, false),
+            "type" => "Agenda",
+            "message" => "Agenda {$this->agenda->title} telah dibuat.",
+            "redirect_url" => route('agenda.show', $this->agenda->id, false),
             "data" => [
                 "actor" => $this->actor,
-                "programKerjaItemId" => $this->programKerjaItem->id,
-                "status" => $this->status,
+                "agendaId" => $this->agenda->id
             ],
         ];
     }

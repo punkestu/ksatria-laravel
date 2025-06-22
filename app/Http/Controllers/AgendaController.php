@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agenda;
+use App\Models\User;
+use App\Notifications\AgendaNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AgendaController extends Controller
 {
@@ -58,12 +61,18 @@ class AgendaController extends Controller
                 ->withInput();
         }
 
-        Agenda::create([
+        $agenda = Agenda::create([
             'title' => $request->title,
             'description' => $request->description,
             'start_time' => $request->start_time,
             'end_time' => $request->end_time,
         ]);
+
+        AgendaNotification::notify(
+            User::all(),
+            Auth::user(),
+            $agenda
+        );
 
         return redirect()->route('agenda.index')
             ->with('alert', [
