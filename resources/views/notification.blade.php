@@ -9,7 +9,8 @@
                 <a class="{{ $notification->read_at != null ? 'bg-white' : 'bg-accent-4 text-white' }} border w-full px-4 py-2 rounded-lg flex flex-col"
                     href="{{ $notification->data['redirect_url'] }}">
                     <h3 class="font-semibold">{{ $notification->data['type'] }}</h3>
-                    <p class="text-xs">Oleh {{$notification->data['data']['actor']['name']}}</p>
+                    <p class="text-xs">Oleh
+                        {{ $notification->data['data']['actor'] ? $notification->data['data']['actor']['name'] : '-' }}</p>
                     <p>{{ $notification->data['message'] }}</p>
                     <p class="opacity-50 mt-1 self-end">{{ $notification->created_at->diffForHumans() }}</p>
                 </a>
