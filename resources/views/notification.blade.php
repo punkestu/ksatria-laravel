@@ -10,7 +10,7 @@
                     href="{{ $notification->data['redirect_url'] }}">
                     <h3 class="font-semibold">{{ $notification->data['type'] }}</h3>
                     <p class="text-xs">Oleh
-                        {{ $notification->data['data']['actor'] ? $notification->data['data']['actor']['name'] : '-' }}</p>
+                        {{ isset($notification->data['data']['actor']) ? $notification->data['data']['actor']['name'] : '-' }}</p>
                     <p>{{ $notification->data['message'] }}</p>
                     <p class="opacity-50 mt-1 self-end">{{ $notification->created_at->diffForHumans() }}</p>
                 </a>
