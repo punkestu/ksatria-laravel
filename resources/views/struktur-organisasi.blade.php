@@ -75,8 +75,8 @@
             const kaisar = document.getElementById('kaisar');
             const ksatria = document.getElementById('ksatria');
 
-            roleModel.innerText = cabang.rolemodel && cabang.ksatria != "" ? cabang.roleModel : 'Para General Manager';
-            kaisar.innerText = cabang.kaisar && cabang.ksatria != "" ? cabang.kaisar : 'Para Change Leader';
+            roleModel.innerText = cabang.rolemodel && cabang.rolemodel != "" ? cabang.rolemodel : 'Para General Manager';
+            kaisar.innerText = cabang.kaisar && cabang.kaisar != "" ? cabang.kaisar : 'Para Change Leader';
             ksatria.innerHTML = cabang.ksatria && cabang.ksatria != "" ? cabang.ksatria.split("|").map(name =>
                     `<p class="grow text-center bg-white border mt-1 px-4 py-1 rounded-lg">${name}</p>`).join('') :
                 `<p class="grow text-center bg-white border mt-1 px-4 py-1 rounded-lg">Para Ksatria</p>`;
