@@ -227,7 +227,7 @@ class ProgramkerjaController extends Controller
     {
         /** @var User $me */
         $me = Auth::user();
-        if ($me->id !== $pengajuanproker->user_id) {
+        if ($me->cabang_id !== $pengajuanproker->cabang_id) {
             return redirect()->route('program-kerja')->with('alert', [
                 'type' => 'warning',
                 'message' => 'Anda tidak memiliki izin untuk mengubah program kerja ini.'
