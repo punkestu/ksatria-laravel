@@ -5,33 +5,29 @@
             href="{{ route('pengajuanproker.index', ['tab' => $programkerja->name]) }}">Kembali</a>
 
         <div class="flex justify-end gap-2">
-            @if (auth()->user()->isAdmin())
-                @if ($pengajuanproker->status == 'pending')
-                    <form onsubmit="return otherIntercept('Apakah Anda yakin ingin menyetujui item ini?')"
-                        action="{{ route('pengajuanproker.approve', $pengajuanproker->id) }}" method="post"
-                        style="display:inline;">
-                        @csrf
-                        @method('PATCH')
-                        <button class="bg-green-500 text-white px-4 py-1 rounded mb-4 inline-block cursor-pointer"
-                            type="submit">Approve</button>
-                    </form>
-                    <form onsubmit="return otherIntercept('Apakah Anda yakin ingin menolak item ini?')"
-                        action="{{ route('pengajuanproker.reject', $pengajuanproker->id) }}" method="post"
-                        style="display:inline;">
-                        @csrf
-                        @method('PATCH')
-                        <button class="bg-red-500 text-white px-4 py-1 rounded mb-4 inline-block cursor-pointer"
-                            type="submit">Tolak</button>
-                    </form>
-                @endif
+            @if (auth()->user()->isAdmin() && $pengajuanproker->status == 'pending')
+                <form onsubmit="return otherIntercept('Apakah Anda yakin ingin menyetujui item ini?')"
+                    action="{{ route('pengajuanproker.approve', $pengajuanproker->id) }}" method="post"
+                    style="display:inline;">
+                    @csrf
+                    @method('PATCH')
+                    <button class="bg-green-500 text-white px-4 py-1 rounded mb-4 inline-block cursor-pointer"
+                        type="submit">Approve</button>
+                </form>
+                <form onsubmit="return otherIntercept('Apakah Anda yakin ingin menolak item ini?')"
+                    action="{{ route('pengajuanproker.reject', $pengajuanproker->id) }}" method="post"
+                    style="display:inline;">
+                    @csrf
+                    @method('PATCH')
+                    <button class="bg-red-500 text-white px-4 py-1 rounded mb-4 inline-block cursor-pointer"
+                        type="submit">Tolak</button>
+                </form>
             @else
                 <a class="bg-blue-500 text-white px-4 py-1 rounded mb-4 inline-block cursor-pointer"
                     href="{{ route('pengajuanproker.exportpdf', $pengajuanproker->id) }}">Export</a>
-                @if ($pengajuanproker->status == 'pending' || $pengajuanproker->status == 'approved')
+                @if ($pengajuanproker->status == 'pending')
                     <a class="bg-yellow-500 text-white px-4 py-1 rounded mb-4 inline-block cursor-pointer"
                         href="{{ route('pengajuanproker.edit', $pengajuanproker->id) }}">Edit</a>
-                @endif
-                @if ($pengajuanproker->status == 'pending')
                     <form onsubmit="deleteIntercept(event)"
                         action="{{ route('pengajuanproker.destroy', $pengajuanproker->id) }}" method="POST"
                         style="display:inline;">
@@ -40,6 +36,9 @@
                         <button class="bg-red-500 text-white px-4 py-1 rounded mb-4 inline-block cursor-pointer"
                             type="submit">Hapus</button>
                     </form>
+                @elseif($pengajuanproker->status == 'approved')
+                    <a class="bg-yellow-500 text-white px-4 py-1 rounded mb-4 inline-block cursor-pointer"
+                        href="{{ route('pengajuanproker.edit', $pengajuanproker->id) }}">Review</a>
                 @endif
             @endif
         </div>
@@ -110,13 +109,13 @@
                 $pengajuanproker->status === 'approved' ||
                     $pengajuanproker->status === 'rejected' ||
                     $pengajuanproker->status === 'completed')
-                @if ($pengajuanproker->pictures->isNotEmpty())
+                @if ($pengajuanproker->resources->isNotEmpty())
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700">Gambar</label>
                         <div class="flex flex-wrap justify-center gap-2">
-                            @foreach ($pengajuanproker->pictures as $picture)
+                            @foreach ($pengajuanproker->resources as $resource)
                                 <div class="rounded p-2 grow">
-                                    <img src="{{ $picture->url }}" alt="{{ $picture->name }}" class="rounded">
+                                    <img src="{{ $resource->url }}" alt="{{ $resource->name }}" class="rounded">
                                 </div>
                             @endforeach
                         </div>

@@ -34,8 +34,8 @@
                 <a class="bg-accent-3 text-white px-4 py-1 rounded hover:bg-accent-5"
                     href="{{ route('pengajuanproker.export') }}">Export</a>
                 @if (!auth()->user()->isAdmin())
-                    <button class="bg-accent-3 text-white px-4 py-1 rounded hover:bg-accent-5 cursor-pointer"
-                        onclick="MicroModal.show('modal-import');">Import</button>
+                    {{-- <button class="bg-accent-3 text-white px-4 py-1 rounded hover:bg-accent-5 cursor-pointer"
+                        onclick="MicroModal.show('modal-import');">Import</button> --}}
                     <a class="bg-accent-4 text-white px-4 py-1 rounded hover:bg-accent-5"
                         href="{{ route('pengajuanproker.create', ['tab' => $programkerja->name]) }}">Tambah</a>
                 @endif
@@ -64,7 +64,7 @@
                             'KSATRIA S.H.A.R.E' => '/images/program-kerja/KSATRIA SHARE.png',
                         ][$programkerja->name] ?? '/images/program-kerja/8 KSATRIA.png';
                 @endphp
-                <img class="w-full mt-2 scale-100 hover:scale-125 duration-500" src="{{ $image }}"
+                <img class="w-full mt-2 scale-100 lg:hover:scale-125 duration-500" src="{{ $image }}"
                     alt="{{ $programkerja->name }}">
             </aside>
             <aside class="order-1 lg:order-2 col-span-6 lg:col-span-5">

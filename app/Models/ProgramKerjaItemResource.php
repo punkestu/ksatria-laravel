@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProgramKerjaItemPicture extends Model
+class ProgramKerjaItemResource extends Model
 {
     protected $fillable = [
         'program_kerja_item_id',
-        'picture_id'
+        'resource_id',
+        'type',
+        'alt_text',
     ];
 
     public function programKerjaItem()
@@ -16,8 +18,8 @@ class ProgramKerjaItemPicture extends Model
         return $this->belongsTo(ProgramKerjaItem::class);
     }
 
-    public function picture()
+    public function resource()
     {
-        return $this->belongsTo(Picture::class);
+        return $this->belongsTo(Resource::class);
     }
 }

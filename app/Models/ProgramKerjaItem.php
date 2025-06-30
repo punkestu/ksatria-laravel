@@ -26,9 +26,9 @@ class ProgramKerjaItem extends Model
         return $this->belongsTo(ProgramKerja::class);
     }
 
-    public function pictures()
+    public function resources()
     {
-        return $this->belongsToMany(Picture::class, 'program_kerja_item_pictures');
+        return $this->belongsToMany(Resource::class, 'program_kerja_item_resources');
     }
 
     public function cabang()

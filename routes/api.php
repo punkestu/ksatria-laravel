@@ -10,12 +10,12 @@ Route::get('/user', function (Request $request) {
 Route::group([
     'prefix' => '/v1'
 ], function () {
-    Route::post('/pictures', [\App\Http\Controllers\PictureController::class, 'storeApi'])
-        ->name('api.pictures.store')
+    Route::post('/resources', [\App\Http\Controllers\ResourceController::class, 'storeApi'])
+        ->name('api.resources.store')
         ->middleware('auth:sanctum');
 
-    Route::get('/pictures', [\App\Http\Controllers\PictureController::class, 'getAllPicturesApi'])
-        ->name('api.pictures.index')
+    Route::get('/resources', [\App\Http\Controllers\ResourceController::class, 'getAllresourcesApi'])
+        ->name('api.resources.index')
         ->middleware('auth:sanctum');
 
     Route::get('/agenda', [\App\Http\Controllers\AgendaController::class, 'getAgendaApi'])

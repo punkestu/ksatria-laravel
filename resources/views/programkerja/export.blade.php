@@ -30,7 +30,7 @@
     <p>{{ $pengajuanproker->keterangan }}</p>
 
     <h4>Lampiran</h4>
-    @foreach ($pengajuanproker->pictures as $picture)
-        <img src="{{ public_path($picture->url) }}" alt="Lampiran-{{ $loop->iteration }}">
+    @foreach ($pengajuanproker->resources as $resource)
+        <img src="{{ public_path($resource->url) }}" alt="Lampiran-{{ $loop->iteration }}">
     @endforeach
 @endif

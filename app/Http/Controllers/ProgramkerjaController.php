@@ -247,9 +247,9 @@ class ProgramkerjaController extends Controller
             'description' => 'required|string',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
-            'picture' => 'nullable|array',
-            'picture.*.picture_id' => 'exists:pictures,id',
-            'picture.*.url' => 'nullable|string',
+            'resource' => 'nullable|array',
+            'resource.*.resource_id' => 'exists:resources,id',
+            'resource.*.url' => 'nullable|string',
             'keterangan' => 'required_if:status,approved|string',
         ], [
             'program_kerja_id.required' => 'Program kerja harus dipilih.',
@@ -264,9 +264,9 @@ class ProgramkerjaController extends Controller
             'end_date.required' => 'Tanggal akhir harus diisi.',
             'end_date.date' => 'Tanggal akhir harus berupa tanggal yang valid.',
             'end_date.after_or_equal' => 'Tanggal akhir harus setelah atau sama dengan tanggal mulai.',
-            'picture.array' => 'Gambar harus berupa array.',
-            'picture.*.picture_id.exists' => 'Gambar yang dipilih tidak valid.',
-            'picture.*.url.string' => 'URL gambar harus berupa teks.',
+            'resource.array' => 'Gambar harus berupa array.',
+            'resource.*.resource_id.exists' => 'Gambar yang dipilih tidak valid.',
+            'resource.*.url.string' => 'URL gambar harus berupa teks.',
             'keterangan.required_if' => 'Keterangan harus diisi jika status program kerja adalah disetujui.',
             'keterangan.string' => 'Keterangan harus berupa teks.',
         ]);
@@ -294,9 +294,9 @@ class ProgramkerjaController extends Controller
         }
         if ($pengajuanproker->status == 'approved') {
             $pengajuanproker->keterangan = $request->input('keterangan');
-            $pengajuanproker->pictures()->sync(array_map(function ($picture) {
-                return $picture["picture_id"];
-            }, $request->input('picture', [])));
+            $pengajuanproker->resources()->sync(array_map(function ($resource) {
+                return $resource["resource_id"];
+            }, $request->input('resource', [])));
             // set current date to tgl_selesai
             $pengajuanproker->tgl_selesai = now();
             $pengajuanproker->status = 'completed';
@@ -435,7 +435,15 @@ class ProgramkerjaController extends Controller
 
     public function export(Request $request)
     {
-        $programkerjas = ProgramKerja::all();
+        /**
+        * @var User $me
+        */
+        $me = Auth::user();
+        if ($me->isAdmin()) {
+            $programkerjas = ProgramKerja::all();
+        } else {
+            $programkerjas = ProgramKerja::where('cabang_id', $me->cabang_id)->get();
+        }
         if ($programkerjas->isEmpty()) {
             return redirect()->route('program-kerja')->with('alert', [
                 'type' => 'warning',

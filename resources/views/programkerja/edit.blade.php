@@ -71,20 +71,20 @@
             </div>
             @if ($pengajuanproker->status === 'approved')
                 <hr class="my-2">
-                {{-- pictures --}}
+                {{-- resources --}}
                 <div class="mb-4">
-                    <label for="pictures" class="block text-sm font-medium text-gray-700">Gambar (Bukti kegiatan, Struk,
+                    <label for="resources" class="block text-sm font-medium text-gray-700">Berkas (Bukti kegiatan, Struk,
                         dll)</label>
                     <div class="flex flex-wrap gap-2 mt-1">
-                        @foreach (old('picture') ?? $pengajuanproker->pictures as $picture)
+                        @foreach (old('resource') ?? $pengajuanproker->resources as $resource)
                             <div class="w-32 aspect-square relative">
-                                <img class="h-full w-full object-cover" src="{{ $picture['url'] ?? $picture->url }}"
-                                    alt="picture_{{ $loop->index }}">
-                                <input type="hidden" name="picture[{{ $loop->index }}][picture_id]"
-                                    value="{{ $picture['id'] ?? $picture->id }}">
-                                <input type="hidden" name="picture[{{ $loop->index }}][url]"
-                                    value="{{ $picture['url'] ?? $picture->url }}">
-                                <button type="button" onclick="deletePicture(this)"
+                                <img class="h-full w-full object-cover" src="{{ $resource['url'] ?? $resource->url }}"
+                                    alt="resource_{{ $loop->index }}">
+                                <input type="hidden" name="resource[{{ $loop->index }}][resource_id]"
+                                    value="{{ $resource['id'] ?? $resource->id }}">
+                                <input type="hidden" name="resource[{{ $loop->index }}][url]"
+                                    value="{{ $resource['url'] ?? $resource->url }}">
+                                <button type="button" onclick="deleteresource(this)"
                                     class="bg-gray-500/30 opacity-0 hover:opacity-100 duration-300 absolute top-0 left-0 w-full h-full flex justify-center items-center">
                                     <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                         width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -94,7 +94,7 @@
                                 </button>
                             </div>
                         @endforeach
-                        <button id="add-picture-btn" type="button" popovertarget="popover-add-picture"
+                        <button id="add-resource-btn" type="button" popovertarget="popover-add-resource"
                             class="bg-gray-500/30 hover:bg-gray-500/100 duration-300 w-32 aspect-square flex justify-center items-center">
                             <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -103,11 +103,10 @@
                             </svg>
                         </button>
                     </div>
-                    @if ($errors->has('pictures'))
-                        <p class="text-red-500 text-xs mt-1">{{ $errors->first('pictures') }}</p>
+                    @if ($errors->has('resources'))
+                        <p class="text-red-500 text-xs mt-1">{{ $errors->first('resources') }}</p>
                     @endif
                 </div>
-                {{-- budger --}}
                 <div class="mb-4">
                     <label for="keterangan" class="block text-sm font-medium text-gray-700">Keterangan</label>
                     <textarea id="keterangan" name="keterangan" required
@@ -125,25 +124,25 @@
     </main>
     <div class="bg-white shadow-lg p-6 rounded-xl md:w-2/3 xl:w-1/2 max-h-[75vh] overflow-y-auto
            fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
-        id="popover-add-picture" popover>
-        <h3 class="text-lg mb-4">Tambah Gambar</h3>
-        <form class="flex flex-col gap-2" onsubmit="uploadPicture(event)">
+        id="popover-add-resource" popover>
+        <h3 class="text-lg mb-4">Tambah Berkas</h3>
+        <form class="flex flex-col gap-2" onsubmit="uploadresource(event)">
             <input class="border px-2 py-1 rounded-md" type="file" name="file" id="file"
-                accept=".jpg, .jpeg, .png, .gif">
-            <input class="border px-2 py-1 rounded-md" placeholder="Url Gambar" type="text" name="fileurl"
+                accept=".jpg, .jpeg, .png, .gif, .pdf">
+            <input class="border px-2 py-1 rounded-md" placeholder="Url Berkas" type="text" name="fileurl"
                 id="fileurl">
             <button class="bg-accent-1 text-white px-2 py-1 rounded-lg" type="submit">Upload</button>
         </form>
-        <div id="popover-picture-container" class="flex flex-wrap justify-center gap-2 pt-2">
+        <div id="popover-resource-container" class="flex flex-wrap justify-center gap-2 pt-2">
             Loading...
         </div>
     </div>
     <template>
-        <div data-template="picture-card" class="w-32 aspect-square relative">
+        <div data-template="resource-card" class="w-32 aspect-square relative">
             <img class="h-full w-full object-cover" src="" alt="">
-            <input type="hidden" data-role="picture_id" name="picture[][picture_id]">
-            <input type="hidden" data-role="picture_url" name="picture[][url]">
-            <button type="button" onclick="deletePicture(this)"
+            <input type="hidden" data-role="resource_id" name="resource[][resource_id]">
+            <input type="hidden" data-role="resource_url" name="resource[][url]">
+            <button type="button" onclick="deleteresource(this)"
                 class="bg-gray-500/30 opacity-0 hover:opacity-100 duration-300 absolute top-0 left-0 w-full h-full flex justify-center items-center">
                 <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                     height="24" fill="none" viewBox="0 0 24 24">
@@ -152,64 +151,70 @@
                 </svg>
             </button>
         </div>
-        <button data-template="popover-picture-item" type="button" class="w-24 aspect-square">
-            <img class="h-full w-full object-cover" src="/storage/pictures/FzAuDUz2t7lIQaHXI2Te6T0LerLXODNKUXfVRKvp.png"
-                alt="image">
+        <button data-template="popover-resource-item" type="button" class="w-32 aspect-square border rounded-md p-2" title="test">
+            <img class="h-full w-full object-cover rounded-md" src="/storage/resources/FzAuDUz2t7lIQaHXI2Te6T0LerLXODNKUXfVRKvp.png"
+                alt="image" onerror="this.src='/images/berkas.svg'">
+            <p class="text-xs mt-1"></p>
         </button>
     </template>
 @endsection
 @push('scripts')
     <script>
-        var picCount = {{ old('picture') ? count(old('picture')) : $pengajuanproker->pictures->count() }};
-        async function loadPictures() {
+        var picCount = {{ old('resource') ? count(old('resource')) : $pengajuanproker->resources->count() }};
+        async function loadresources() {
             if (!isTokenValid()) {
                 await syncToken();
             }
-            $('#popover-picture-container').html('<p class="text-gray-500">Loading...</p>');
+            $('#popover-resource-container').html('<p class="text-gray-500">Loading...</p>');
             $.ajax({
-                url: '{{ route('api.pictures.index') }}',
+                url: '{{ route('api.resources.index') }}',
                 type: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('sync_token'),
                 },
                 success: function(response) {
-                    const container = $('#popover-picture-container');
+                    const container = $('#popover-resource-container');
                     container.empty();
-                    response.data.forEach(picture => {
+                    response.data.forEach(resource => {
                         const template = document.querySelector('template');
                         const clone = template.content.cloneNode(true);
-                        const newPicture = $(clone).find('[data-template="popover-picture-item"]');
-                        newPicture.removeAttr('data-template');
-                        newPicture.find('img').attr('src', picture.url);
-                        newPicture.find('img').attr('alt', picture.name);
-                        newPicture.attr('onclick', `addThisPicture(${JSON.stringify(picture)})`);
-                        container.append(newPicture);
+                        const newresource = $(clone).find(
+                        '[data-template="popover-resource-item"]');
+                        newresource.removeAttr('data-template');
+                        newresource.find('img').attr('src',
+                            /^image\/(jpeg|png|gif|bmp|webp|svg\+xml|x-icon|avif|tiff?)$/.test(
+                                resource.type) ? resource.url : "test");
+                        newresource.find('img').attr('alt', resource.alt_text);
+                        newresource.find('p').text(resource.name.substr(0, 14) + (resource.name.length > 14 ? '...' : ''));
+                        newresource.attr('title', resource.name);
+                        newresource.attr('onclick', `addThisresource(${JSON.stringify(resource)})`);
+                        container.append(newresource);
                     });
                 },
                 error: function() {
-                    $('#popover-picture-container').html(
-                        '<p class="text-red-500">Failed to load pictures.</p>');
+                    $('#popover-resource-container').html(
+                        '<p class="text-red-500">Failed to load resources.</p>');
                 }
             })
         }
 
-        function addThisPicture(picture) {
+        function addThisresource(resource) {
             picCount++;
             const template = document.querySelector('template');
             const clone = template.content.cloneNode(true);
-            const newPicture = $(clone).find('[data-template="picture-card"]');
-            newPicture.removeAttr('data-template');
-            newPicture.find('img').attr('src', picture.url);
-            newPicture.find('img').attr('alt', picture.name);
-            newPicture.find('input[data-role="picture_id"]').val(picture.id);
-            newPicture.find('input[data-role="picture_id"]').attr('name', `picture[${picCount}][picture_id]`);
-            newPicture.find('input[data-role="picture_url"]').val(picture.url);
-            newPicture.find('input[data-role="picture_url"]').attr('name', `picture[${picCount}][url]`);
-            $('#add-picture-btn').before(newPicture);
+            const newresource = $(clone).find('[data-template="resource-card"]');
+            newresource.removeAttr('data-template');
+            newresource.find('img').attr('src', resource.url);
+            newresource.find('img').attr('alt', resource.name);
+            newresource.find('input[data-role="resource_id"]').val(resource.id);
+            newresource.find('input[data-role="resource_id"]').attr('name', `resource[${picCount}][resource_id]`);
+            newresource.find('input[data-role="resource_url"]').val(resource.url);
+            newresource.find('input[data-role="resource_url"]').attr('name', `resource[${picCount}][url]`);
+            $('#add-resource-btn').before(newresource);
 
-            $('#popover-add-picture')[0].hidePopover();
+            $('#popover-add-resource')[0].hidePopover();
         }
-        async function uploadPicture(event) {
+        async function uploadresource(event) {
             event.preventDefault();
             if (!$('#file')[0].files[0] && !$('#fileurl').val()) {
                 alert('Please select a file or enter a file URL.');
@@ -226,7 +231,7 @@
                 form.append('fileurl', $('#fileurl').val());
             }
             $.ajax({
-                url: "{{ route('api.pictures.store') }}",
+                url: "{{ route('api.resources.store') }}",
                 type: "POST",
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('sync_token'),
@@ -235,25 +240,25 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    alert('Picture uploaded successfully!');
+                    alert('resource uploaded successfully!');
                     $('#file').val('');
                     $('#fileurl').val('');
-                    loadPictures();
+                    loadresources();
                 },
                 error: function() {
-                    alert('An error occurred while uploading the picture.');
+                    alert('An error occurred while uploading the resource.');
                 }
             })
         }
 
-        function deletePicture(button) {
+        function deleteresource(button) {
             const $this = $(button);
             $this.parent().remove();
         }
     </script>
     <script>
         onloads.push(() => {
-            loadPictures();
+            loadresources();
         });
     </script>
 @endpush
