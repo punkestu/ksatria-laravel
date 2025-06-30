@@ -115,7 +115,7 @@
                         <div class="flex flex-wrap justify-center gap-2">
                             @foreach ($pengajuanproker->resources as $resource)
                                 <div class="rounded p-2 grow">
-                                    <img src="{{ $resource->url }}" alt="{{ $resource->name }}" class="rounded">
+                                    <img src="{{ $resource->url }}" alt="{{ $resource->name }}" class="rounded" onerror="this.url='/images/berkas.svg'">
                                 </div>
                             @endforeach
                         </div>

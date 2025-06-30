@@ -79,7 +79,7 @@
                         @foreach (old('resource') ?? $pengajuanproker->resources as $resource)
                             <div class="w-32 aspect-square relative">
                                 <img class="h-full w-full object-cover" src="{{ $resource['url'] ?? $resource->url }}"
-                                    alt="resource_{{ $loop->index }}">
+                                    alt="resource_{{ $loop->index }}" onerror="">
                                 <input type="hidden" name="resource[{{ $loop->index }}][resource_id]"
                                     value="{{ $resource['id'] ?? $resource->id }}">
                                 <input type="hidden" name="resource[{{ $loop->index }}][url]"
@@ -139,16 +139,18 @@
     </div>
     <template>
         <div data-template="resource-card" class="w-32 aspect-square relative">
-            <img class="h-full w-full object-cover" src="" alt="">
+            <img class="h-full w-full object-cover" src="" alt="" onerror="this.src='/images/berkas.svg'">
             <input type="hidden" data-role="resource_id" name="resource[][resource_id]">
             <input type="hidden" data-role="resource_url" name="resource[][url]">
             <button type="button" onclick="deleteresource(this)"
-                class="bg-gray-500/30 opacity-0 hover:opacity-100 duration-300 absolute top-0 left-0 w-full h-full flex justify-center items-center">
+                title=""
+                class="bg-gray-500/30 opacity-0 hover:opacity-100 duration-300 absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center">
                 <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                     height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M6 18 17.94 6M18 18 6.06 6" />
                 </svg>
+                <p class="text-xs text-white"></p>
             </button>
         </div>
         <button data-template="popover-resource-item" type="button" class="w-32 aspect-square border rounded-md p-2" title="test">
@@ -210,6 +212,8 @@
             newresource.find('input[data-role="resource_id"]').attr('name', `resource[${picCount}][resource_id]`);
             newresource.find('input[data-role="resource_url"]').val(resource.url);
             newresource.find('input[data-role="resource_url"]').attr('name', `resource[${picCount}][url]`);
+            newresource.find('button').attr('title', resource.name);
+            newresource.find('button p').text(resource.name.substr(0, 14) + (resource.name.length > 14 ? '...' : ''));
             $('#add-resource-btn').before(newresource);
 
             $('#popover-add-resource')[0].hidePopover();
