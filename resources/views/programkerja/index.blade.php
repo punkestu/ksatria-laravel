@@ -15,12 +15,17 @@
                         class="flex flex-col items-center gap-2">
                         @csrf
                         <div class="relative flex justify-center items-center h-48 w-full bg-slate-100 rounded-md">
-                            <label class="text-center z-0" for="import-file" id="import-file-label">Silahkan pilih / drop file yang ingin diimport</label>
-                            <input class="opacity-0 z-10 w-full h-full absolute left-0 top-0 border" type="file" name="import-file" id="import-file" title="" accept=".xlsx" onchange="setImportFileLabel(this)">
+                            <label class="text-center z-0" for="import-file" id="import-file-label">Silahkan pilih / drop
+                                file yang ingin diimport</label>
+                            <input class="opacity-0 z-10 w-full h-full absolute left-0 top-0 border" type="file"
+                                name="import-file" id="import-file" title="" accept=".xlsx"
+                                onchange="setImportFileLabel(this)">
                         </div>
                         <div class="flex justify-between w-full">
-                            <button class="bg-red-500 text-white px-4 py-1 rounded hover:bg-accent-5 cursor-pointer" type="button" onclick="clearImportFile()">Clear</button>
-                            <button class="bg-accent-3 text-white px-4 py-1 rounded hover:bg-accent-5 cursor-pointer" type="submit">Upload</button>
+                            <button class="bg-red-500 text-white px-4 py-1 rounded hover:bg-accent-5 cursor-pointer"
+                                type="button" onclick="clearImportFile()">Clear</button>
+                            <button class="bg-accent-3 text-white px-4 py-1 rounded hover:bg-accent-5 cursor-pointer"
+                                type="submit">Upload</button>
                         </div>
                     </form>
                 </main>
@@ -153,6 +158,15 @@
                                                             type="submit">Tolak</button>
                                                     </form>
                                                 @endif
+                                                <form onsubmit="deleteIntercept(event)"
+                                                    action="{{ route('pengajuanproker.destroy', $item->id) }}"
+                                                    method="POST" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button
+                                                        class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                                                        type="submit">Hapus</button>
+                                                </form>
                                             @else
                                                 @if ($item->status == 'pending' || $item->status == 'approved')
                                                     <a class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600"
