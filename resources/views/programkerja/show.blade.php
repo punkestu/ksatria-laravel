@@ -112,28 +112,47 @@
                 @if ($pengajuanproker->resources->isNotEmpty())
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700">Gambar</label>
-                        <div class="flex flex-wrap justify-center gap-2">
+                        <div class="flex flex-wrap gap-2">
                             @foreach ($pengajuanproker->resources as $resource)
-                                <div class="rounded p-2 grow">
-                                    <img src="{{ $resource->url }}" alt="{{ $resource->name }}" class="rounded" onerror="this.url='/images/berkas.svg'">
+                                {{-- <div class="rounded p-2 grow">
+                                    <img src="{{ $resource->url }}" alt="{{ $resource->name }}" class="rounded"
+                                        onerror="this.url='/images/berkas.svg'">
+                                </div> --}}
+                                <div data-template="resource-card" class="w-32 aspect-square relative">
+                                    <img class="h-full w-full object-cover" src="{{ $resource->url }}"
+                                        alt="{{ $resource->alt_text }}" onerror="this.src='/images/berkas.svg'">
+                                    <a href="{{ $resource->url }}" title="{{ $resource->alt_text }}"
+                                        class="bg-gray-500/30 opacity-0 hover:opacity-100 duration-300 absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center">
+                                        <svg class="w-6 h-6 text-white" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                            viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M18 14v4.833A1.166 1.166 0 0 1 16.833 20H5.167A1.167 1.167 0 0 1 4 18.833V7.167A1.166 1.166 0 0 1 5.167 6h4.618m4.447-2H20v5.768m-7.889 2.121 7.778-7.778" />
+                                        </svg>
+
+                                        <p class="text-xs text-white">
+                                            {{ substr($resource->name, 0, 14) }}...
+                                        </p>
+                                    </a>
                                 </div>
                             @endforeach
                         </div>
                     </div>
-                    <div class="mb-4">
-                        <label for="keterangan" class="block text-sm font-medium text-gray-700">Keterangan</label>
-                        <textarea id="keterangan" name="keterangan" required
-                            class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                            readonly>{{ $pengajuanproker->keterangan }}</textarea>
-                    </div>
-                    <div class="mb-4">
-                        <label for="tgl_selesai" class="block text-sm font-medium text-gray-700">Diselesaikan
-                            Tanggal</label>
-                        <input type="date" id="tgl_selesai" name="tgl_selesai" required
-                            class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                            value="{{ $pengajuanproker->tgl_selesai }}" readonly>
-                    </div>
                 @endif
+                <div class="mb-4">
+                    <label for="keterangan" class="block text-sm font-medium text-gray-700">Keterangan</label>
+                    <textarea id="keterangan" name="keterangan" required
+                        class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        readonly>{{ $pengajuanproker->keterangan }}</textarea>
+                </div>
+                <div class="mb-4">
+                    <label for="tgl_selesai" class="block text-sm font-medium text-gray-700">Diselesaikan
+                        Tanggal</label>
+                    <input type="date" id="tgl_selesai" name="tgl_selesai" required
+                        class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        value="{{ $pengajuanproker->tgl_selesai }}" readonly>
+                </div>
             @endif
         </div>
     </main>
