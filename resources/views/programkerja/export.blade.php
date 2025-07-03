@@ -31,6 +31,13 @@
 
     <h4>Lampiran</h4>
     @foreach ($pengajuanproker->resources as $resource)
-        <img src="{{ public_path($resource->url) }}" alt="Lampiran-{{ $loop->iteration }}">
+        <p>{{ $resource->name }}</p>
+        @if (str_contains($resource->type, 'image'))
+            <div style="width: 500px">
+                <img style="width: 100%" src="{{ public_path($resource->url) }}" alt="Lampiran-{{ $loop->iteration }}">
+            </div>
+        @else
+            <p>File tidak didukung untuk ditampilkan.</p>
+        @endif
     @endforeach
 @endif
