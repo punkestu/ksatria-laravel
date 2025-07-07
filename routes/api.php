@@ -22,6 +22,10 @@ Route::group([
         ->name('api.agenda.index')
         ->middleware('auth:sanctum');
 
+    Route::get('/dist_proker', [\App\Http\Controllers\OtherController::class, 'distprokerApi'])
+        ->name('api.dist_proker.index')
+        ->middleware('auth:sanctum');
+
     Route::post('/welcome_video', [\App\Http\Controllers\Dashboard\SettingController::class, 'update_welcome_video'])
         ->name('api.welcome_video.update')
         ->middleware(['auth:sanctum', 'admin']);
