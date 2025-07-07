@@ -23,7 +23,12 @@ class AppServiceProvider extends ServiceProvider
     {
         if (Schema::hasTable('settings')) {
             $settings = Cache::remember('settings', 60, function () {
-                return \App\Models\Setting::find(1); // Assuming there's only one settings record
+                $settings = \App\Models\Setting::find(1);
+                if (!$settings) {
+                    $settings = new \App\Models\Setting();
+                    $settings->save();
+                }
+                return $settings;
             });
             view()->share('settings', $settings);
         }
