@@ -28,7 +28,9 @@ window.jQuery = jQuery;
 window.isTokenValid = () => {
     if (
         localStorage.getItem("sync_token") &&
-        localStorage.getItem("sync_token_expiry")
+        localStorage.getItem("sync_token_expiry") &&
+        localStorage.getItem("sync_token") != "undefined" &&
+        localStorage.getItem("sync_token_expiry") != "undefined"
     ) {
         const expiry = new Date(localStorage.getItem("sync_token_expiry"));
         if (expiry > new Date()) {

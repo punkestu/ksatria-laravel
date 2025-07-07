@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +20,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $settings = Cache::remember('settings', 60, function () {
+            return \App\Models\Setting::find(1); // Assuming there's only one settings record
+        });
+        view()->share('settings', $settings);
     }
 }

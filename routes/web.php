@@ -64,6 +64,9 @@ Route::resource('programkerja', \App\Http\Controllers\Dashboard\ProgramkerjaCont
 Route::resource('karyawan', \App\Http\Controllers\Dashboard\KaryawanController::class)
     ->middleware(['auth', 'admin'])
     ->names('dashboard.karyawan');
+Route::get('/setting', [\App\Http\Controllers\Dashboard\SettingController::class, 'index'])
+    ->middleware(['auth', 'admin'])
+    ->name('dashboard.setting.index');
 
 Route::group([
     'prefix' => '/pengajuanproker',

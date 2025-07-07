@@ -188,8 +188,9 @@
             </aside>
         </section>
         <section id="video" class="p-8 md:p-16" data-aos="fade">
-            <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/mbkI7aKOkE0?si=WVKnIDGcgPHb8Bdi"
-                title="YouTube video player" frameborder="0"
+            <iframe class="w-full aspect-video" src="/storage/{{$settings->welcome_video}}"
+                onerror="this.onerror=null; this.src='https://www.youtube.com/embed/mbkI7aKOkE0?si=WVKnIDGcgPHb8Bdi'"
+                title="Welcome Video" frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </section>
