@@ -337,7 +337,7 @@ class ProgramkerjaController extends Controller
     {
         /** @var User $me */
         $me = Auth::user();
-        if ($me->id !== $pengajuanproker->user_id) {
+        if ($me->id !== $pengajuanproker->user_id && !$me->isAdmin()) {
             return redirect()->route('program-kerja')->with('alert', [
                 'type' => 'warning',
                 'message' => 'Anda tidak memiliki izin untuk menghapus program kerja ini.'
