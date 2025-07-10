@@ -84,6 +84,7 @@
                                 <th class="text-left px-2 py-1">Status</th>
                                 <th class="text-left px-2 py-1">Dari-Sampai</th>
                                 <th class="text-left px-2 py-1">Tanggal Selesai</th>
+                                <th class="text-left px-2 py-1">Poin</th>
                                 @if (auth()->user()->isAdmin())
                                     <th class="text-left px-2 py-1">Cabang</th>
                                     <th class="text-left px-2 py-1">Dibuat Oleh</th>
@@ -124,6 +125,9 @@
                                     </td>
                                     <td class="px-2 py-1">
                                         {{ $item->tgl_selesai ? $item->tgl_selesai : 'N/A' }}
+                                    </td>
+                                    <td class="px-2 py-1">
+                                        {{ $item->rating ? $item->rating : 'N/A' }}
                                     </td>
                                     @if (auth()->user()->isAdmin())
                                         <td class="px-2 py-1">{{ $item->cabang->name ?? 'N/A' }}</td>

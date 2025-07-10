@@ -50,9 +50,9 @@ class ProgramkerjaController extends Controller
         /** @var User $me */
         $me = Auth::user();
         if ($me->isAdmin()) {
-            $myprogramkerja = $programkerja->items();
+            $myprogramkerja = $programkerja->items()->orderBy('created_at', 'desc');
         } else {
-            $myprogramkerja = $programkerja->items()->where('user_id', Auth::id())
+            $myprogramkerja = $programkerja->items()->orderBy('created_at', 'desc')->where('user_id', Auth::id())
                 ->where('cabang_id', Auth::user()->cabang_id);
         }
 
@@ -247,6 +247,7 @@ class ProgramkerjaController extends Controller
             'description' => 'required|string',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
+            'finish_date' => 'required_if:status,approved|date|after_or_equal:start_date',
             'resource' => 'nullable|array',
             'resource.*.resource_id' => 'exists:resources,id',
             'resource.*.url' => 'nullable|string',
@@ -264,6 +265,9 @@ class ProgramkerjaController extends Controller
             'end_date.required' => 'Tanggal akhir harus diisi.',
             'end_date.date' => 'Tanggal akhir harus berupa tanggal yang valid.',
             'end_date.after_or_equal' => 'Tanggal akhir harus setelah atau sama dengan tanggal mulai.',
+            'finish_date.required_if' => 'Tanggal selesai harus diisi jika program kerja telah disetujui.',
+            'finish_date.date' => 'Tanggal selesai harus berupa tanggal yang valid.',
+            'finish_date.after_or_equal' => 'Tanggal selesai harus setelah atau sama dengan tanggal mulai.',
             'resource.array' => 'Gambar harus berupa array.',
             'resource.*.resource_id.exists' => 'Gambar yang dipilih tidak valid.',
             'resource.*.url.string' => 'URL gambar harus berupa teks.',
@@ -298,25 +302,29 @@ class ProgramkerjaController extends Controller
                 return $resource["resource_id"];
             }, $request->input('resource', [])));
             // set current date to tgl_selesai
-            $pengajuanproker->tgl_selesai = now();
             $pengajuanproker->status = 'completed';
 
             // set rating by tgl_selesai compared with start_date and end_date
             $startDate = $pengajuanproker->start_date ? new \DateTime($pengajuanproker->start_date) : new \DateTime();
             $endDate = $pengajuanproker->end_date ? new \DateTime($pengajuanproker->end_date) : new \DateTime();
-            $tglSelesai = new \DateTime($pengajuanproker->tgl_selesai);
+            $tglSelesai = $request->input('finish_date') ? new \DateTime($request->input('finish_date')) : new \DateTime();
+
+            $pengajuanproker->tgl_selesai = $tglSelesai->format('Y-m-d H:i:s');
+
             $totalDays = $endDate->diff($startDate)->days;
+            if ($totalDays <= 0) {
+                $totalDays = 1;
+            }
+            $halfTotalDays = $totalDays * 0.5;
             $daysCompleted = $tglSelesai->diff($startDate)->days;
 
             // if days completed less than 50% of total days, set rating to 10
-            if ($daysCompleted <= ($totalDays * 0.5)) {
+            if ($daysCompleted <= $halfTotalDays) {
                 $pengajuanproker->rating = 10;
+            } else if ($daysCompleted > $halfTotalDays && $daysCompleted <= $totalDays) {
+                $pengajuanproker->rating = 10 - (3 * (($daysCompleted - $halfTotalDays) / $halfTotalDays));
             } else {
-                $halfTotalDays = $totalDays / 2;
-                if ($halfTotalDays <= 0) {
-                    $halfTotalDays = 1; // Avoid division by zero
-                }
-                $pengajuanproker->rating = 10 - (5 * (($daysCompleted - $halfTotalDays) / $halfTotalDays));
+                $pengajuanproker->rating = 7 - (3 * (($daysCompleted - $totalDays) / $totalDays));
             }
 
             $pengajuanproker->save();
@@ -439,8 +447,8 @@ class ProgramkerjaController extends Controller
     public function export(Request $request)
     {
         /**
-        * @var User $me
-        */
+         * @var User $me
+         */
         $me = Auth::user();
         if ($me->isAdmin()) {
             $programkerjas = ProgramKerja::all();
@@ -486,7 +494,7 @@ class ProgramkerjaController extends Controller
                     'type' => 'error',
                     'message' => 'Gagal mengimpor data program kerja. Periksa kembali format file yang diunggah.'
                 ],
-                ... array_map(function ($failure) {
+                ...array_map(function ($failure) {
                     return [
                         'type' => 'error',
                         'message' => "Baris {$failure->row()}: {$failure->errors()[0]}"

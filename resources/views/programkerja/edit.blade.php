@@ -71,6 +71,16 @@
             </div>
             @if ($pengajuanproker->status === 'approved')
                 <hr class="my-2">
+                {{-- finish_date --}}
+                <div class="mb-4">
+                    <label for="finish_date" class="block text-sm font-medium text-gray-700">Tanggal Selesai</label>
+                    <input type="date" id="finish_date" name="finish_date" required
+                        class="p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm read-only:bg-gray-50"
+                        value="{{ old('finish_date') }}">
+                    @if ($errors->has('finish_date'))
+                        <p class="text-red-500 text-xs mt-1">{{ $errors->first('finish_date') }}</p>
+                    @endif
+                </div>
                 {{-- resources --}}
                 <div class="mb-4">
                     <label for="resources" class="block text-sm font-medium text-gray-700">Berkas (Bukti kegiatan, Struk,
@@ -98,8 +108,8 @@
                             class="bg-gray-500/30 hover:bg-gray-500/100 duration-300 w-32 aspect-square flex justify-center items-center">
                             <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 12h14m-7 7V5" />
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="M5 12h14m-7 7V5" />
                             </svg>
                         </button>
                     </div>
@@ -139,11 +149,11 @@
     </div>
     <template>
         <div data-template="resource-card" class="w-32 aspect-square relative">
-            <img class="h-full w-full object-cover" src="" alt="" onerror="this.src='/images/berkas.svg'">
+            <img class="h-full w-full object-cover" src="" alt=""
+                onerror="this.src='/images/berkas.svg'">
             <input type="hidden" data-role="resource_id" name="resource[][resource_id]">
             <input type="hidden" data-role="resource_url" name="resource[][url]">
-            <button type="button" onclick="deleteresource(this)"
-                title=""
+            <button type="button" onclick="deleteresource(this)" title=""
                 class="bg-gray-500/30 opacity-0 hover:opacity-100 duration-300 absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center">
                 <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                     height="24" fill="none" viewBox="0 0 24 24">
@@ -153,9 +163,11 @@
                 <p class="text-xs text-white"></p>
             </button>
         </div>
-        <button data-template="popover-resource-item" type="button" class="w-32 aspect-square border rounded-md p-2" title="test">
-            <img class="h-full w-full object-cover rounded-md" src="/storage/resources/FzAuDUz2t7lIQaHXI2Te6T0LerLXODNKUXfVRKvp.png"
-                alt="image" onerror="this.src='/images/berkas.svg'">
+        <button data-template="popover-resource-item" type="button" class="w-32 aspect-square border rounded-md p-2"
+            title="test">
+            <img class="h-full w-full object-cover rounded-md"
+                src="/storage/resources/FzAuDUz2t7lIQaHXI2Te6T0LerLXODNKUXfVRKvp.png" alt="image"
+                onerror="this.src='/images/berkas.svg'">
             <p class="text-xs mt-1"></p>
         </button>
     </template>
@@ -181,13 +193,14 @@
                         const template = document.querySelector('template');
                         const clone = template.content.cloneNode(true);
                         const newresource = $(clone).find(
-                        '[data-template="popover-resource-item"]');
+                            '[data-template="popover-resource-item"]');
                         newresource.removeAttr('data-template');
                         newresource.find('img').attr('src',
                             /^image\/(jpeg|png|gif|bmp|webp|svg\+xml|x-icon|avif|tiff?)$/.test(
                                 resource.type) ? resource.url : "test");
                         newresource.find('img').attr('alt', resource.alt_text);
-                        newresource.find('p').text(resource.name.substr(0, 14) + (resource.name.length > 14 ? '...' : ''));
+                        newresource.find('p').text(resource.name.substr(0, 14) + (resource.name
+                            .length > 14 ? '...' : ''));
                         newresource.attr('title', resource.name);
                         newresource.attr('onclick', `addThisresource(${JSON.stringify(resource)})`);
                         container.append(newresource);
