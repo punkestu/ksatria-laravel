@@ -313,6 +313,9 @@ class ProgramkerjaController extends Controller
                 $pengajuanproker->rating = 10;
             } else {
                 $halfTotalDays = $totalDays / 2;
+                if ($halfTotalDays <= 0) {
+                    $halfTotalDays = 1; // Avoid division by zero
+                }
                 $pengajuanproker->rating = 10 - (5 * (($daysCompleted - $halfTotalDays) / $halfTotalDays));
             }
 
