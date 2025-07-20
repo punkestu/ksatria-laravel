@@ -5,7 +5,7 @@
         'Statistik' => ['url' => route('statistic'), 'isadmin' => false, 'redirect' => false],
         'Struktur AOC' => ['url' => route('struktur-organisasi'), 'isadmin' => false, 'redirect' => false],
         'Bantuan' => [
-            'url' => 'https://wa.me/+6282198329493?text=Hallo admin👋, Saya mau tanya ...',
+            'url' => 'https://wa.me/+6282198329493?text=Hallo adminnya CHAMPION👋, Saya mau tanya ...',
             'redirect' => true,
             'isadmin' => false,
         ],
