@@ -193,10 +193,9 @@
         </section>
         <section id="video" class="p-8 md:p-16" data-aos="fade">
             <iframe class="w-full aspect-video"
-                src="{{ $settings->welcome_video ? '/storage/' . $settings->welcome_video : 'https://www.youtube.com/embed/mbkI7aKOkE0?si=WVKnIDGcgPHb8Bdi' }}"
+                src="{{ $settings->welcome_video ? $settings->welcome_video : 'https://www.youtube.com/embed/mbkI7aKOkE0?si=WVKnIDGcgPHb8Bdi' }}"
                 title="Welcome Video" frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         </section>
     </main>
 @endsection

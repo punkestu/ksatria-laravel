@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class SettingController extends Controller
 {
@@ -18,13 +19,12 @@ class SettingController extends Controller
         $validation = validator(
             $request->all(),
             [
-                'welcome_video' => 'required|file|mimes:mp4,mov,avi,flv|max:20480', // 20MB max
+                'welcome_video' => 'required|string|url',
             ],
             [
-                'welcome_video.required' => 'Video tidak boleh kosong.',
-                'welcome_video.file' => 'File yang diunggah harus berupa video.',
-                'welcome_video.mimes' => 'Format video yang diizinkan: mp4, mov, avi, flv.',
-                'welcome_video.max' => 'Ukuran video tidak boleh lebih dari 20MB.',
+                'welcome_video.required' => 'Video selamat datang harus diisi.',
+                'welcome_video.string' => 'Video selamat datang harus berupa string.',
+                'welcome_video.url' => 'Video selamat datang harus berupa URL yang valid.',
             ]
         );
 
@@ -36,12 +36,15 @@ class SettingController extends Controller
             ], 422);
         }
 
-        $path = $request->file('welcome_video')->store('welcome_videos', 'public');
+        $youtubeId = Setting::get_youtube_id($request->input('welcome_video'));
+        $path = 'https://www.youtube.com/embed/' . $youtubeId;
 
         Setting::updateOrCreate(
             ['id' => 1], // Assuming there's only one setting record
             ['welcome_video' => $path]
         );
+
+        Cache::forget('settings'); // Clear the cache for settings
 
         return response()->json([
             'status' => 'success',
