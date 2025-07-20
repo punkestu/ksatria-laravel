@@ -16,10 +16,10 @@
 <header class="sticky top-0 flex items-center flex-wrap justify-between gap-2 bg-accent-1 px-4 py-2 text-white z-30">
     <aside class="flex grow xl:grow-0 gap-4 items-center">
         <img class="h-8" src="/images/bumn.svg" alt="BUMN">
-        <img class="h-10" src="/images/akhlak.png" alt="akhlak">
-        <img class="h-10" src="/images/airnav.png" alt="Airnav">
+        <img class="h-10" src="/images/akhlak.webp" alt="akhlak">
+        <img class="h-10" src="/images/airnav.webp" alt="Airnav">
         <a href="/" class="flex h-8">
-            <img src="/images/champion-logo-long.png" alt="champion">
+            <img src="/images/champion-logo-long.webp" alt="champion">
         </a>
     </aside>
     <nav class="flex justify-center md:justify-end items-center grow gap-8">

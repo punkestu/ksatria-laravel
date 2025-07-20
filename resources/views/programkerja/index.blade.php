@@ -59,15 +59,15 @@
                 @php
                     $image =
                         [
-                            'KSATRIA BAIK' => '/images/program-kerja/KSATRIA BAIK.png',
-                            'KSATRIA BISA' => '/images/program-kerja/KSATRIA BISA.png',
-                            'KSATRIA PINTAR' => '/images/program-kerja/KSATRIA PINTAR.png',
-                            'KSATRIA RELIGI' => '/images/program-kerja/KSATRIA RELIGI.png',
-                            'KSATRIA RESIK' => '/images/program-kerja/KSATRIA RESIK.png',
-                            'KSATRIA SALAM' => '/images/program-kerja/KSATRIA SALAM.png',
-                            'KSATRIA SEHAT' => '/images/program-kerja/KSATRIA SEHAT.png',
-                            'KSATRIA S.H.A.R.E' => '/images/program-kerja/KSATRIA SHARE.png',
-                        ][$programkerja->name] ?? '/images/program-kerja/8 KSATRIA.png';
+                            'KSATRIA BAIK' => '/images/program-kerja/KSATRIA BAIK.webp',
+                            'KSATRIA BISA' => '/images/program-kerja/KSATRIA BISA.webp',
+                            'KSATRIA PINTAR' => '/images/program-kerja/KSATRIA PINTAR.webp',
+                            'KSATRIA RELIGI' => '/images/program-kerja/KSATRIA RELIGI.webp',
+                            'KSATRIA RESIK' => '/images/program-kerja/KSATRIA RESIK.webp',
+                            'KSATRIA SALAM' => '/images/program-kerja/KSATRIA SALAM.webp',
+                            'KSATRIA SEHAT' => '/images/program-kerja/KSATRIA SEHAT.webp',
+                            'KSATRIA S.H.A.R.E' => '/images/program-kerja/KSATRIA SHARE.webp',
+                        ][$programkerja->name] ?? '/images/program-kerja/8 KSATRIA.webp';
                 @endphp
                 <img class="w-full mt-2 scale-100 lg:hover:scale-125 duration-500" src="{{ $image }}"
                     alt="{{ $programkerja->name }}">
