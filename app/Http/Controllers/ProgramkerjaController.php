@@ -47,13 +47,30 @@ class ProgramkerjaController extends Controller
             $programkerja = $programkerjas->first();
         }
 
+        $q_tahun = $request->get('tahun');
+        $q_bulan = $request->get('bulan');
+        $q_status = $request->get('status');
+        $q_search = $request->get('search');
+
+        $myprogramkerja = $programkerja->items()->orderBy('created_at', 'desc');
         /** @var User $me */
         $me = Auth::user();
-        if ($me->isAdmin()) {
-            $myprogramkerja = $programkerja->items()->orderBy('created_at', 'desc');
-        } else {
+        if (!$me->isAdmin()) {
             $myprogramkerja = $programkerja->items()->orderBy('created_at', 'desc')->where('user_id', Auth::id())
                 ->where('cabang_id', Auth::user()->cabang_id);
+        }
+
+        if ($q_tahun) {
+            $myprogramkerja = $myprogramkerja->whereYear('start_date', $q_tahun);
+        }
+        if ($q_bulan) {
+            $myprogramkerja = $myprogramkerja->whereMonth('start_date', $q_bulan);
+        }
+        if ($q_status) {
+            $myprogramkerja = $myprogramkerja->where('status', $q_status);
+        }
+        if ($q_search) {
+            $myprogramkerja = $myprogramkerja->where('name', 'LIKE', '%' . $q_search . '%');
         }
 
         $totalPages = ceil($myprogramkerja->count() / 10);

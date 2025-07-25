@@ -33,7 +33,7 @@
         </div>
     </div>
     <main class="min-h-screen p-8 bg-gray-50">
-        <section class="flex justify-between">
+        <section class="flex justify-between flex-wrap gap-2">
             <h2 class="font-semibold text-2xl">Program Kerja</h2>
             <div class="flex gap-2">
                 <a class="bg-accent-3 text-white px-4 py-1 rounded hover:bg-accent-5"
@@ -46,11 +46,71 @@
                 @endif
             </div>
         </section>
+        <section class="flex flex-wrap my-2 justify-between gap-2 shadow bg-white p-4">
+            <form action="" method="get" class="flex flex-wrap gap-2" id="filter">
+                @foreach (request()->query() as $key => $value)
+                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                @endforeach
+                <select name="tahun" id="tahun" onchange="document.querySelector('#filter').submit()"
+                    class="border px-2 py-1 rounded-md">
+                    @for ($year = now()->year; $year >= now()->year - 10; $year--)
+                        <option value="{{ $year }}" {{ request('tahun') == $year ? 'selected' : '' }}>
+                            {{ $year }}</option>
+                    @endfor
+                </select>
+                <select name="bulan" id="bulan" onchange="document.querySelector('#filter').submit()"
+                    class="border px-2 py-1 rounded-md">
+                    @php
+                        $months = [
+                            1 => 'Januari',
+                            2 => 'Februari',
+                            3 => 'Maret',
+                            4 => 'April',
+                            5 => 'Mei',
+                            6 => 'Juni',
+                            7 => 'Juli',
+                            8 => 'Agustus',
+                            9 => 'September',
+                            10 => 'Oktober',
+                            11 => 'November',
+                            12 => 'Desember',
+                        ];
+                    @endphp
+                    <option value="">Semua Bulan</option>
+                    @foreach ($months as $num => $name)
+                        <option value="{{ $num }}" {{ request('bulan') == $num ? 'selected' : '' }}>
+                            {{ $name }}</option>
+                    @endforeach
+                </select>
+                <select name="status" id="status" onchange="document.querySelector('#filter').submit()"
+                    class="border px-2 py-1 rounded-md">
+                    <option value="">Semua Status</option>
+                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Diajukan</option>
+                    <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Disetujui</option>
+                    <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Ditolak</option>
+                    <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Selesai</option>
+                    <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
+                </select>
+            </form>
+            <form action="" method="GET" class="flex flex-wrap gap-2">
+                @foreach (request()->query() as $key => $value)
+                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                @endforeach
+                <input type="search" name="search" id="search" class="border px-2 py-1 rounded-md"
+                    placeholder="Nama kegiatan ..." value="{{ request('search') }}">
+                <button type="submit" class="px-2 py-1 bg-accent-1 text-white rounded-md cursor-pointer">Cari</button>
+            </form>
+        </section>
         <section id="head" class="pt-2 overflow-x-scroll scrollbar-hidden">
             <nav id="tabs" class="flex gap-4">
                 @foreach ($programkerjas as $item)
-                    <a class="{{ $programkerja->name == $item->name ? 'bg-accent-4 text-white' : '' }} px-2 py-1"
-                        href="{{ route('pengajuanproker.index', ['tab' => $item->name]) }}">{{ $item->name }}</a>
+                    <a class="{{ $programkerja->name == $item->name ? 'bg-accent-4 text-white' : 'hover:bg-accent-4/65 hover:text-white duration-300' }} px-2 py-1"
+                        href="{{ route('pengajuanproker.index', [
+                            'tab' => $item->name,
+                            'tahun' => request('tahun'),
+                            'bulan' => request('bulan'),
+                            'status' => request('status'),
+                        ]) }}">{{ $item->name }}</a>
                 @endforeach
             </nav>
         </section>
